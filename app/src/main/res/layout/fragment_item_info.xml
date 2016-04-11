@@ -1,0 +1,46 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.singhh17.project_fresh.ItemInfo">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/itemImage" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="247dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top">
+
+        <TextView
+            android:layout_width="216dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/itemName"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/expireInfo"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/colorIndicator"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="right|top" />
+
+</FrameLayout>
