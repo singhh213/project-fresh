@@ -28,7 +28,6 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("PANTRY");
 
 //        android.support.v7.app.ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
 //        LayoutInflater li = LayoutInflater.from(getActivity());
@@ -39,6 +38,9 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle("PANTRY");
+
 
         final PantryData data[] = new PantryData[] {
                 new PantryData("Cheddar Cheese", 2),

@@ -16,7 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity implements PantryView.OnFragmentInteractionListener, ItemInfo.OnFragmentInteractionListener, ShoppingList.OnFragmentInteractionListener {
+import com.parse.Parse;
+import com.parse.ParseObject;
+
+public class MainActivity extends AppCompatActivity implements PantryView.OnFragmentInteractionListener,
+        ItemInfo.OnFragmentInteractionListener, ShoppingList.OnFragmentInteractionListener,
+        Scan.OnFragmentInteractionListener, Recipe.OnFragmentInteractionListener {
 
 
     private FragmentManager fragmentManager;
@@ -26,10 +31,63 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                        .applicationId("CIvZ3eD8SlHP0YJQ5cLXSxGyaXazaQqR1h9uwQYC")
+                        .server("http://YOUR_PARSE_SERVER:1337/parse")
+
+
+                        .build()
+        );
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.container1, new PantryView());
+        final PantryView pantry = new PantryView();
+        ft.add(R.id.container1, pantry);
         ft.commit();
+
+        ImageButton home = (ImageButton) findViewById(R.id.home);
+        ImageButton scan = (ImageButton) findViewById(R.id.scan);
+        ImageButton recipe = (ImageButton) findViewById(R.id.recipe);
+
+        home.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container1, pantry);
+                ft.commit();
+            }
+        });
+
+        scan.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container1, new Scan());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+        recipe.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container1, new Recipe());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+
 
 
 

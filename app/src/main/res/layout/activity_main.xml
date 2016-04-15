@@ -3,16 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uw.singhh17.project_fresh.MainActivity">
 
     <FrameLayout
         android:id="@+id/container1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
         <!--<ListView-->
             <!--android:layout_width="wrap_content"-->
@@ -22,4 +19,37 @@
             <!--android:layout_centerHorizontal="true" />-->
 
     </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/bottomActionBar"
+        android:background="#3a50f7"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/home"
+            android:src="@android:drawable/ic_menu_save"
+            android:layout_weight="1"
+            android:background="#3a50f7" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/scan"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_weight="1"
+            android:background="#3a50f7" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/recipe"
+            android:src="@android:drawable/ic_media_play"
+            android:layout_weight="1"
+            android:background="#3a50f7" />
+    </LinearLayout>
 </RelativeLayout>
