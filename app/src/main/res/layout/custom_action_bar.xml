@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageButton android:src="@mipmap/ic_launcher"
+    <ImageButton android:src="@drawable/ic_settings_button"
         android:background="?attr/actionBarItemBackground"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="match_parent"
@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"/>
 
-    <ImageButton android:src="@mipmap/ic_launcher"
+    <ImageButton android:src="@drawable/ic_shopping_list"
         android:background="?attr/actionBarItemBackground"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="match_parent"

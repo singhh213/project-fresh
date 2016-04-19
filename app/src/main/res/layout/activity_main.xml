@@ -34,21 +34,21 @@
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/home"
-            android:src="@android:drawable/ic_menu_save"
+            android:src="@drawable/ic_home_button"
             android:layout_weight="1"
             android:background="#3a50f7" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/scan"
-            android:src="@android:drawable/ic_input_add"
+            android:src="@drawable/ic_scan_button"
             android:layout_weight="1"
             android:background="#3a50f7" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/recipe"
-            android:src="@android:drawable/ic_media_play"
+            android:src="@drawable/ic_recipe_button"
             android:layout_weight="1"
             android:background="#3a50f7" />
     </LinearLayout>
