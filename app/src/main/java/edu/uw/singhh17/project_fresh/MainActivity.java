@@ -31,17 +31,15 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                        .applicationId("CIvZ3eD8SlHP0YJQ5cLXSxGyaXazaQqR1h9uwQYC")
-                        .server("http://YOUR_PARSE_SERVER:1337/parse")
+//        ParseObject testObject = new ParseObject("Pantry");
+//        testObject.put("item", "cheddar cheese");
+//        ParseObject testObject1 = new ParseObject("Pantry");
+//
+//        testObject1.put("item", "milk");
+//
+//        testObject.saveInBackground();
+//        testObject1.saveInBackground();
 
-
-                        .build()
-        );
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
