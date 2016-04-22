@@ -14,6 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PantryView extends Fragment implements ItemInfo.OnFragmentInteractionListener {
 
@@ -42,33 +50,65 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
         getActivity().setTitle("PANTRY");
 
 
-        final PantryData data[] = new PantryData[] {
-                new PantryData("Cheddar Cheese", 2),
-                new PantryData("Milk", 2),
-                new PantryData("Bacon", 3),
-                new PantryData("Egg", 5),
-                new PantryData("Yogurt", 7),
-                new PantryData("Peanut Butter", 8),
-                new PantryData("Bread", 4),
-                new PantryData("Crackers", 16),
-                new PantryData("Apples", 5),
-                new PantryData("Juice", 8)
-        };
+        final PantryData data[] = new PantryData[] {};
+
+//        {
+//                new PantryData("Cheddar Cheese", 2),
+//                new PantryData("Milk", 2),
+//                new PantryData("Bacon", 3),
+//                new PantryData("Egg", 5),
+//                new PantryData("Yogurt", 7),
+//                new PantryData("Peanut Butter", 8),
+//                new PantryData("Bread", 4),
+//                new PantryData("Crackers", 16),
+//                new PantryData("Apples", 5),
+//                new PantryData("Juice", 8)
+//        };
+
+        final ArrayList<PantryData> parseData = new ArrayList<PantryData>();
+
+
 
         final View rootView = inflater.inflate(R.layout.fragment_pantry_view, container, false);
 
-
-        PantryAdapter pAdapter = new PantryAdapter(getActivity(), R.layout.row_pantry, data);
+        final PantryAdapter pAdapter = new PantryAdapter(getActivity(), R.layout.row_pantry, parseData);
         AdapterView pantryView = (AdapterView)rootView.findViewById(R.id.pantryList);
         pantryView.setAdapter(pAdapter);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+
+                if (e == null) {
+                    if (objects.size() > 0) {
+
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+
+                            Log.d("TEST", "done: " + p.getString("item"));
+//                           parseData.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
+//                            data[i] = new PantryData(p.getString("item"), p.getInt("daysLeft"));
+
+                            pAdapter.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
+
+                        }
+                    }
+
+                }
+
+            }
+        });
 
         pantryView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("TEST CLICK", "onItemClick: " + position);
                 Bundle bundle = new Bundle();
-                bundle.putString("name", data[position].name);
-                bundle.putInt("expireInfo", data[position].daysLeft);
+                bundle.putString("name", parseData.get(position).name);
+                bundle.putInt("expireInfo", parseData.get(position).daysLeft);
                 ItemInfo itemObj = new ItemInfo();
                 itemObj.setArguments(bundle);
 

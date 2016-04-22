@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.zxing.client.android.Intents;
+import com.google.zxing.integration.android.IntentIntegrator;
+
 
 public class Scan extends Fragment {
 
@@ -30,7 +33,7 @@ public class Scan extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         getActivity().setTitle("SCAN");
-
+//        new IntentIntegrator(getActivity()).initiateScan();
         return inflater.inflate(R.layout.fragment_scan, container, false);
     }
 

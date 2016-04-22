@@ -16,14 +16,16 @@
         android:orientation="vertical"
         android:layout_width="247dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="5dp">
 
         <TextView
-            android:layout_width="216dp"
+            android:layout_width="277dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/itemName"
+            android:textSize="17sp"
             android:layout_marginLeft="15dp" />
 
         <TextView
@@ -37,10 +39,12 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:id="@+id/colorIndicator"
         android:layout_marginTop="20dp"
-        android:layout_gravity="right|top" />
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right|top"
+        android:background="@drawable/circle"/>
 
 </FrameLayout>

@@ -1,6 +1,8 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -43,8 +46,24 @@ public class ItemInfo extends Fragment {
         TextView itemName = (TextView) rootView.findViewById(R.id.itemName);
         TextView expInfo = (TextView) rootView.findViewById(R.id.expireInfo);
 
+        ImageView indicator = (ImageView) rootView.findViewById(R.id.colorIndicator);
+        GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
+
         itemName.setText(name);
-        expInfo.setText(Integer.toString(expireInfo));
+
+        if (expireInfo > 5) {
+            Log.d("TEST days left", "getView: " + expireInfo);
+            bgShape.setColor(Color.GREEN);
+        } else if (expireInfo > 3){
+            bgShape.setColor(Color.YELLOW);
+        } else {
+            bgShape.setColor(Color.RED);
+        }
+
+        expInfo.setText("Expires in " + Integer.toString(expireInfo) + " days");
+
+//        itemName.setText(name);
+//        expInfo.setText(Integer.toString(expireInfo));
 
 
         return rootView;
