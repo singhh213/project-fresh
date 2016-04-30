@@ -6,4 +6,29 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridView"
+        android:layout_gravity="center"
+        android:layout_marginTop="45dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        />
+
+    <SearchView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchView"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="10dp"/>
+
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="62dp"
+        android:id="@+id/imageButton"
+        android:layout_gravity="right|top"
+        android:src="@drawable/ic_recipe_menu_icon"
+        android:background="#ffffff" />
+
 </FrameLayout>

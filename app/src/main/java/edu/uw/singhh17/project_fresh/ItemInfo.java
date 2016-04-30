@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,13 +52,15 @@ public class ItemInfo extends Fragment {
 
         itemName.setText(name);
 
-        if (expireInfo > 5) {
+        if (expireInfo > 7) {
             Log.d("TEST days left", "getView: " + expireInfo);
-            bgShape.setColor(Color.GREEN);
-        } else if (expireInfo > 3){
-            bgShape.setColor(Color.YELLOW);
+            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_green));
+        } else if (expireInfo > 3) {
+            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_yellow));
+        } else if (expireInfo > 0){
+            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_orange));
         } else {
-            bgShape.setColor(Color.RED);
+            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_red));
         }
 
         expInfo.setText("Expires in " + Integer.toString(expireInfo) + " days");

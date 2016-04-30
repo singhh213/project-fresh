@@ -1,9 +1,9 @@
-package edu.uw.singhh17.project_fresh;
+package edu.uw.singhh17.project_fresh.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import edu.uw.singhh17.project_fresh.Model.PantryData;
+import edu.uw.singhh17.project_fresh.R;
 
 /**
  * Created by harpreetsingh on 4/9/16.
@@ -45,13 +48,15 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
         int daysLeft = objects.get(position).daysLeft;
         Log.d("TEST days left", "getView: " + daysLeft);
 
-        if (daysLeft > 5) {
+        if (daysLeft > 7) {
             Log.d("TEST days left", "getView: " + daysLeft);
-            bgShape.setColor(Color.GREEN);
-        } else if (daysLeft > 3){
-            bgShape.setColor(Color.YELLOW);
+            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_green));
+        } else if (daysLeft > 3) {
+            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_yellow));
+        } else if (daysLeft > 0){
+            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_orange));
         } else {
-            bgShape.setColor(Color.RED);
+            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_red));
         }
 
         expInfo.setText("Expires in " + Integer.toString(daysLeft) + " days");

@@ -1,4 +1,4 @@
-package edu.uw.singhh17.project_fresh;
+package edu.uw.singhh17.project_fresh.Model;
 
 /**
  * Created by harpreetsingh on 4/9/16.

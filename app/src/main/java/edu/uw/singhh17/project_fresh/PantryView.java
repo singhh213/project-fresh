@@ -1,18 +1,15 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -21,6 +18,9 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.uw.singhh17.project_fresh.Adapters.PantryAdapter;
+import edu.uw.singhh17.project_fresh.Model.PantryData;
 
 
 public class PantryView extends Fragment implements ItemInfo.OnFragmentInteractionListener {
@@ -80,8 +80,6 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-
-
                 if (e == null) {
                     if (objects.size() > 0) {
 
@@ -92,13 +90,12 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 //                           parseData.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
 //                            data[i] = new PantryData(p.getString("item"), p.getInt("daysLeft"));
 
-                            pAdapter.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
+                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft")));
 
                         }
                     }
 
                 }
-
             }
         });
 

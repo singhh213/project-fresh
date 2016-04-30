@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="actionBarGreen">#7cae41</color>
+    <color name="bottomBarGreen">#547c39</color>
+    <color name="ci_green">#65bab7</color>
+    <color name="ci_red">#e8506a</color>
+    <color name="ci_yellow">#f3e897</color>
+    <color name="ci_orange">#f4994f</color>
 </resources>

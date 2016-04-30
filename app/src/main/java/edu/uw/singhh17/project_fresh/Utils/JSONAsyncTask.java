@@ -1,4 +1,4 @@
-package edu.uw.singhh17.project_fresh;
+package edu.uw.singhh17.project_fresh.Utils;
 
 import android.os.AsyncTask;
 import android.util.Log;
