@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/searchView"
         android:layout_gravity="left|top"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:iconifiedByDefault="false" />
 
     <ImageButton
         android:layout_width="75dp"

@@ -18,6 +18,7 @@ import java.util.List;
 
 import edu.uw.singhh17.project_fresh.R;
 import edu.uw.singhh17.project_fresh.Model.RecipeObject;
+import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
 
 /**
  * Created by harpreetsingh on 4/30/16.
@@ -70,31 +71,5 @@ public class RecipeAdapter extends ArrayAdapter<RecipeObject>{
 
 
         return row;
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

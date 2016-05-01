@@ -9,29 +9,35 @@ public class RecipeObject {
     private String imgUrl;
     private int time;
     private String difficulty;
+    private String recipeId;
 
 
-    public RecipeObject(String name, String imgUrl, int time, String difficulty) {
+    public RecipeObject(String name, String imgUrl, int time, String difficulty, String recipeId) {
         this.name = name;
         this.imgUrl = imgUrl;
         this.time = time;
         this.difficulty = difficulty;
+        this.recipeId = recipeId;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getImgUrl() {
-        return imgUrl;
+        return this.imgUrl;
     }
 
     public int getTime() {
-        return time;
+        return this.time;
     }
 
     public String getDifficulty() {
-        return difficulty;
+        return this.difficulty;
+    }
+
+    public String getRecipeId() {
+        return this.recipeId;
     }
 
 }

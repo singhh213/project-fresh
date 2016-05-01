@@ -1,6 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,7 @@ import edu.uw.singhh17.project_fresh.Utils.JSONAsyncTask;
 
 public class MainActivity extends AppCompatActivity implements PantryView.OnFragmentInteractionListener,
         ItemInfo.OnFragmentInteractionListener, ShoppingList.OnFragmentInteractionListener,
-        Scan.OnFragmentInteractionListener, Recipe.OnFragmentInteractionListener {
+        Scan.OnFragmentInteractionListener, Recipe.OnFragmentInteractionListener, RecipeDetail.OnFragmentInteractionListener {
 
 
     private FragmentManager fragmentManager;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();

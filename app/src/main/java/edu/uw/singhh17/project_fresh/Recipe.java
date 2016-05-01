@@ -3,11 +3,16 @@ package edu.uw.singhh17.project_fresh;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -26,8 +31,8 @@ import edu.uw.singhh17.project_fresh.Utils.Food2ForkClient;
 public class Recipe extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private String recipesSearch = "http://food2fork.com/api/get?key=5253bcb47c6a8f4bbe9624f2388bc2e4&rId=";
-    private final String API_BASE_URL = "http://food2fork.com/api/search?key=5253bcb47c6a8f4bbe9624f2388bc2e4";
+    private final String API_GET_URL = "http://food2fork.com/api/get?key=5253bcb47c6a8f4bbe9624f2388bc2e4&rId=";
+    private final String API_SEARCH_URL = "http://food2fork.com/api/search?key=5253bcb47c6a8f4bbe9624f2388bc2e4&q=";
     private Food2ForkClient client;
     private RecipeAdapter recipeAdapter;
     private Random timeR;
@@ -48,9 +53,30 @@ public class Recipe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().setTitle("RECIPE");
+        getActivity().setTitle("RECIPES");
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
+        android.widget.SearchView search = (android.widget.SearchView) rootView.findViewById(R.id.searchView);
+
+        search.setSubmitButtonEnabled(true);
+
+
+        search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                fetchRecipes(API_SEARCH_URL + query);
+                Toast.makeText(getContext(), "Our word : " + query, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
         timeR = new Random();
 
         final ArrayList<RecipeObject> recipeData = new ArrayList<RecipeObject>();
@@ -63,7 +89,29 @@ public class Recipe extends Fragment {
         GridView gv = (GridView) rootView.findViewById(R.id.gridView);
         gv.setAdapter(recipeAdapter);
 
-        fetchRecipes(API_BASE_URL);
+        fetchRecipes(API_SEARCH_URL);
+
+        gv.setOnItemClickListener(new GridView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putString("recipeUrl", API_GET_URL + recipeData.get(position).getRecipeId());
+                bundle.putInt("recipeTime", recipeData.get(position).getTime());
+                bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
+                bundle.putString("recipeName", recipeData.get(position).getName());
+                bundle.putString("recipeImg", recipeData.get(position).getImgUrl());
+                RecipeDetail recipeDetail = new RecipeDetail();
+                recipeDetail.setArguments(bundle);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container1, recipeDetail);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         return rootView;
     }
@@ -76,13 +124,14 @@ public class Recipe extends Fragment {
                 JSONArray items = null;
                 try {
                     items = response.getJSONArray("recipes");
-
+                    recipeAdapter.clear();
                     for (int i = 0; i < items.length(); i++) {
 
                         String name = items.getJSONObject(i).getString("title");
                         String imgUrl = items.getJSONObject(i).getString("image_url");
+                        String recipeId = items.getJSONObject(i).getString("recipe_id");
 
-                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer()));
+                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer(), recipeId));
 
                     }
                     Log.d("RECIPES TEST", "onSuccess: " + items.toString());
@@ -96,8 +145,8 @@ public class Recipe extends Fragment {
     }
 
     private int timeRandomizer() {
-        int x = timeR.nextInt(65 - 5) + 5;
-        return x % 5 * 5 + 5;
+        int x = timeR.nextInt(75 - 10) + 10;
+        return x % 5 * 5 + 10;
     }
 
     private String difficultyRandomizer() {
