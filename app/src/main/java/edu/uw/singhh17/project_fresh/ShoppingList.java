@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,11 +28,16 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import edu.uw.singhh17.project_fresh.Adapters.PantryAdapter;
+import edu.uw.singhh17.project_fresh.Adapters.ShoppingAdapter;
+import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 import edu.uw.singhh17.project_fresh.R;
 
 public class ShoppingList extends Fragment {
@@ -38,6 +45,10 @@ public class ShoppingList extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Map<String, Boolean> pantryShopping;
+
+    private ArrayList<ShoppingObject> shopList;
+    private ShoppingAdapter sAdapter;
+    private AdapterView adapterView;
 
     public ShoppingList() {
         // Required empty public constructor
@@ -58,6 +69,8 @@ public class ShoppingList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
+
 //        pantryShopping.put("Cheddar Cheese", false);
 //        pantryShopping.put("Milk", false);
 //        pantryShopping.put("Pizza", false);
@@ -72,13 +85,13 @@ public class ShoppingList extends Fragment {
         //keyset (item names) of map turned into string array for list view adapter
         pantryShopping = new HashMap<>();
 
-        final ArrayList<String> shopList = new ArrayList<String>();
+        shopList = new ArrayList<ShoppingObject>();
 
         final View rootView = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_shopping_list, R.id.shopItem, shopList);
-        AdapterView adapterView = (AdapterView) rootView.findViewById(R.id.shopList);
-        adapterView.setAdapter(adapter);
+        sAdapter = new ShoppingAdapter(getActivity(), R.layout.row_shopping_list, shopList);
+        adapterView = (AdapterView)rootView.findViewById(R.id.shopList);
+        adapterView.setAdapter(sAdapter);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -93,32 +106,11 @@ public class ShoppingList extends Fragment {
 
                             pantryShopping = p.getMap("shoppingList");
 
-                            ListView list = (ListView) rootView.findViewById(R.id.shopList);
-
-
                             for (String key : pantryShopping.keySet()) {
-                                adapter.add(key);
-
-
-
-
-
-
-
-//                                if (pantryShopping.get(key)) {
-//                                    TextView item = (TextView) rootView.findViewById(R.id.shopItem);
-//                                    item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//                                }
-
+                                ShoppingObject x = new ShoppingObject(key, pantryShopping.get(key));
+                                shopList.add(x);
                             }
-//                            for (int j = 0; j < list.getCount(); j++) {
-//                                View v = list.getChildAt(j);
-//                                TextView tx = (TextView) v.findViewById(R.id.shopItem);
-//                                Log.d("STRIKE", "done: " + tx.getText().toString());
-//                            }
-
-
+                            ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 
                         }
                     }
@@ -140,34 +132,39 @@ public class ShoppingList extends Fragment {
                 String food = item.getText().toString();
                 Boolean striked = pantryShopping.get(food);
 
-                if(!striked) { //check if boolean for strikethrough for item is true or false to remove strikethrough
+                if (!striked) { //check if boolean for strikethrough for item is true or false to remove strikethrough
                     item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     pantryShopping.put(food, true);
+                    shopList.get(position).striked = true;
+
                 } else {
                     item.setPaintFlags(item.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                     pantryShopping.put(food, false);
+                    shopList.get(position).striked = false;
                 }
 
+                saveShoppingList();
+                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 
-                ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("ShoppingList");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
-                        if (e == null) {
-
-                            objects.get(0).put("shoppingList", pantryShopping);
-                            objects.get(0).saveInBackground();
-                            // object will be your game score
-                        }
-                    }
-
-                });
-
-
-                }
-            });
+            }
+        });
 
         return rootView;
+    }
+
+    private void saveShoppingList() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("ShoppingList");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+
+                    objects.get(0).put("shoppingList", pantryShopping);
+                    objects.get(0).saveInBackground();
+                }
+            }
+
+        });
     }
 
     @Override
@@ -181,6 +178,25 @@ public class ShoppingList extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.shopping_delete:
+
+                Iterator it = pantryShopping.entrySet().iterator();
+                while (it.hasNext())
+                {
+                    Map.Entry x = (Map.Entry) it.next();
+                    if ((Boolean) x.getValue()) {
+                        Log.d("test", "onOptionsItemSelected: " + "remove meeeeee");
+                        ShoppingObject delete = new ShoppingObject((String) x.getKey(), true);
+                        shopList.remove(delete);
+
+                        Log.d("TEST ", "onOptionsItemSelected: " + shopList.toString());
+                        it.remove();
+                    }
+                }
+
+                saveShoppingList();
+
+                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+
 
 
                 return true;
