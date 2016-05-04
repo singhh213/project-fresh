@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import edu.uw.singhh17.project_fresh.Adapters.IngredientsAdapter;
@@ -76,6 +79,16 @@ public class RecipeDetail extends Fragment {
 
         name.setText(recipeName);
         time.setText(recipeTime + " min");
+
+        if (recipeDiff.equals("Easy")) {
+            difficulty.setTextColor(ContextCompat.getColor(getContext(), R.color.ci_green));
+        } else if (recipeDiff.equals("Medium")) {
+            difficulty.setTextColor(ContextCompat.getColor(getContext(), R.color.ci_orange));
+        } else {
+            difficulty.setTextColor(ContextCompat.getColor(getContext(), R.color.ci_red));
+        }
+
+
         difficulty.setText(recipeDiff);
 
         ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
@@ -127,9 +140,9 @@ public class RecipeDetail extends Fragment {
                     Log.d("RECIPE DETAIL", "onSuccess: " + ingredients.toString());
 
 
-
                     for (int i = 0; i < ingredients.length(); i++) {
                         igAdapter.add(new Ingredient(ingredients.get(i).toString(), ""));
+
 
 
                     }

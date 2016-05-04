@@ -1,5 +1,6 @@
 package edu.uw.singhh17.project_fresh;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +21,8 @@ import edu.uw.singhh17.project_fresh.Utils.JSONAsyncTask;
 
 public class MainActivity extends AppCompatActivity implements PantryView.OnFragmentInteractionListener,
         ItemInfo.OnFragmentInteractionListener, ShoppingList.OnFragmentInteractionListener,
-        Scan.OnFragmentInteractionListener, Recipe.OnFragmentInteractionListener, RecipeDetail.OnFragmentInteractionListener {
+        Scan.OnFragmentInteractionListener, Recipe.OnFragmentInteractionListener, RecipeDetail.OnFragmentInteractionListener,
+        AddItemDialog.NoticeDialogListener {
 
 
     private FragmentManager fragmentManager;
@@ -160,5 +162,10 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
     }
 }

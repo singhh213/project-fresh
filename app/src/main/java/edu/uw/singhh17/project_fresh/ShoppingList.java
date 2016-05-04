@@ -1,10 +1,16 @@
 package edu.uw.singhh17.project_fresh;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+//import android.app.Fragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,10 +46,11 @@ import edu.uw.singhh17.project_fresh.Adapters.ShoppingAdapter;
 import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 import edu.uw.singhh17.project_fresh.R;
 
-public class ShoppingList extends Fragment {
+public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialogListener {
 
 
     private OnFragmentInteractionListener mListener;
+    public static final int DIALOG_FRAGMENT = 1;
     private Map<String, Boolean> pantryShopping;
 
     private ArrayList<ShoppingObject> shopList;
@@ -202,10 +209,54 @@ public class ShoppingList extends Fragment {
                 return true;
             case R.id.shopping_add:
 
+                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+                AddItemDialog addItem = new AddItemDialog();
+//                addItem.setTargetFragment(fragmentManager.findFragmentById(R.id.container1), 0);
+//        addItem.setTargetFragment(this, 0);
+                addItem.show(fragmentManager, "dialog");
 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog() {
+        android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+        AddItemDialog addItem = new AddItemDialog();
+//        addItem.setTargetFragment(this, 0);
+//        addItem.setTargetFragment(this, 0);
+        addItem.show(fragmentManager, "dialog");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case DIALOG_FRAGMENT:
+
+                if (resultCode == Activity.RESULT_OK) {
+                    // After Ok code.
+//                    EditText editText = (EditText) findViewById(R.id.project_name);
+                    Log.d("TEST", "onActivityResult: it works");
+
+                    String item = data.getStringExtra("item");
+                    pantryShopping.put(item, false);
+                    saveShoppingList();
+                    shopList.add(new ShoppingObject(item));
+                    ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+
+                } else if (resultCode == Activity.RESULT_CANCELED){
+                    // After Cancel code.
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        Log.d("test", "onDialogPositiveClick: it works");
     }
 
     public interface OnFragmentInteractionListener {

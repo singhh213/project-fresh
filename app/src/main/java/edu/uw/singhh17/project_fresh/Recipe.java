@@ -36,6 +36,8 @@ public class Recipe extends Fragment {
     private Food2ForkClient client;
     private RecipeAdapter recipeAdapter;
     private Random timeR;
+    private Random diffR;
+    private final String[] difficulty = {"Easy", "Medium", "Hard"};
 
 
     public Recipe() {
@@ -66,7 +68,7 @@ public class Recipe extends Fragment {
             public boolean onQueryTextSubmit(String query) {
 
                 fetchRecipes(API_SEARCH_URL + query);
-                Toast.makeText(getContext(), "Our word : " + query, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Our word : " + query, Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -78,6 +80,7 @@ public class Recipe extends Fragment {
 
 
         timeR = new Random();
+        diffR = new Random();
 
         final ArrayList<RecipeObject> recipeData = new ArrayList<RecipeObject>();
 
@@ -150,7 +153,8 @@ public class Recipe extends Fragment {
     }
 
     private String difficultyRandomizer() {
-        return "Easy";
+        int x = diffR.nextInt(3);
+        return difficulty[x];
     }
 
 

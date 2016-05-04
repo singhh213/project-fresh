@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +69,17 @@ public class RecipeAdapter extends ArrayAdapter<RecipeObject>{
 
         time.setText(objects.get(position).getTime() + " min");
 
-        difficulty.setText(objects.get(position).getDifficulty());
+        String diff = objects.get(position).getDifficulty();
 
+        if (diff.equals("Easy")) {
+            difficulty.setTextColor(ContextCompat.getColor(context, R.color.ci_green));
+        } else if (diff.equals("Medium")) {
+            difficulty.setTextColor(ContextCompat.getColor(context, R.color.ci_orange));
+        } else {
+            difficulty.setTextColor(ContextCompat.getColor(context, R.color.ci_red));
+        }
+
+        difficulty.setText(diff);
 
         return row;
     }
