@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import edu.uw.singhh17.project_fresh.Model.PantryData;
 import edu.uw.singhh17.project_fresh.R;
+import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
 
 /**
  * Created by harpreetsingh on 4/9/16.
@@ -42,10 +43,14 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
         TextView itemName = (TextView) row.findViewById(R.id.name);
         TextView expInfo = (TextView) row.findViewById(R.id.expireInfo);
         ImageView indicator = (ImageView) row.findViewById(R.id.colorIndicator);
+        ImageView itemImg = (ImageView) row.findViewById(R.id.itemImage);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
 
         itemName.setText(objects.get(position).name);
         int daysLeft = objects.get(position).daysLeft;
+        new DownloadImageTask(itemImg)
+                .execute(objects.get(position).imageUrl);
+
         Log.d("TEST days left", "getView: " + daysLeft);
 
         if (daysLeft > 7) {

@@ -4,17 +4,37 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/itemImage" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="247dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/itemImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/ic_launcher"/>
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/profile_image"-->
+            <!--android:layout_width="96dp"-->
+            <!--android:layout_height="96dp"-->
+            <!--android:src="@drawable/profile"-->
+            <!--app:civ_border_width="2dp"-->
+            <!--app:civ_border_color="#FF000000"/>-->
+
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="247dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:id="@+id/linearLayout">-->
 
         <TextView
             android:layout_width="281dp"
@@ -22,10 +42,11 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/name"
-            android:textSize="17sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:lines="1" />
+            android:textSize="15sp"
+            android:lines="1"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/colorIndicator"
+            android:layout_toStartOf="@+id/colorIndicator" />
 
         <TextView
             android:layout_width="288dp"
@@ -33,17 +54,26 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
             android:id="@+id/expireInfo"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"/>
+            android:textSize="12sp"
+            android:layout_below="@+id/colorIndicator"
+            android:layout_alignLeft="@+id/name"
+            android:layout_alignStart="@+id/name"
+            android:layout_toLeftOf="@+id/colorIndicator"
+            android:layout_toStartOf="@+id/colorIndicator" />
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <ImageView
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:id="@+id/colorIndicator"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:background="@drawable/circle" />
+        android:background="@drawable/circle"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/name" />
+
+    </RelativeLayout>
 
 </LinearLayout>

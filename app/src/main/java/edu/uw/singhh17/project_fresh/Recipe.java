@@ -11,21 +11,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import edu.uw.singhh17.project_fresh.Adapters.RecipeAdapter;
 import edu.uw.singhh17.project_fresh.Model.RecipeObject;
+import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 import edu.uw.singhh17.project_fresh.Utils.Food2ForkClient;
 
 public class Recipe extends Fragment {
@@ -62,12 +70,66 @@ public class Recipe extends Fragment {
 
         search.setSubmitButtonEnabled(true);
 
+        search.setOnCloseListener(new android.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
+                query.findInBackground(new FindCallback<ParseObject>() {
+
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if (e == null) {
+                            if (objects.size() > 0) {
+                                recipeAdapter.clear();
+                                for (int i = 0; i < objects.size(); i++) {
+                                    ParseObject p = objects.get(i);
+
+                                    recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                            p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+
+
+                                }
+                            }
+
+                        }
+
+                    }
+                });
+                return false;
+            }
+        });
+
 
         search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(final String query) {
 
-                fetchRecipes(API_SEARCH_URL + query);
+
+                ParseQuery<ParseObject> q = ParseQuery.getQuery("Recipes");
+                q.findInBackground(new FindCallback<ParseObject>() {
+
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if (e == null) {
+                            if (objects.size() > 0) {
+                                recipeAdapter.clear();
+                                for (int i = 0; i < objects.size(); i++) {
+                                    ParseObject p = objects.get(i);
+//                            Map<String, String> ingredients = p.getMap("Ingredients");
+//                            List<String> instructions = p.getList("Instructions");
+                                    if (p.getString("Name").toLowerCase().contains(query.toLowerCase())) {
+                                        recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                                p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
+                });
+
+//                fetchRecipes(API_SEARCH_URL + query);
 //                Toast.makeText(getContext(), "Our word : " + query, Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -92,7 +154,31 @@ public class Recipe extends Fragment {
         GridView gv = (GridView) rootView.findViewById(R.id.gridView);
         gv.setAdapter(recipeAdapter);
 
-        fetchRecipes(API_SEARCH_URL);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        recipeAdapter.clear();
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+
+                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+
+
+                        }
+                    }
+
+                }
+
+            }
+        });
+
+//        fetchRecipes(API_SEARCH_URL);
 
         gv.setOnItemClickListener(new GridView.OnItemClickListener() {
 
@@ -100,6 +186,7 @@ public class Recipe extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putString("recipeUrl", API_GET_URL + recipeData.get(position).getRecipeId());
+                bundle.putString("recipeId", recipeData.get(position).getRecipeId());
                 bundle.putInt("recipeTime", recipeData.get(position).getTime());
                 bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
                 bundle.putString("recipeName", recipeData.get(position).getName());
@@ -119,33 +206,33 @@ public class Recipe extends Fragment {
         return rootView;
     }
 
-    public void fetchRecipes(String link) {
-        client = new Food2ForkClient();
-        client.getRecept(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray items = null;
-                try {
-                    items = response.getJSONArray("recipes");
-                    recipeAdapter.clear();
-                    for (int i = 0; i < items.length(); i++) {
-
-                        String name = items.getJSONObject(i).getString("title");
-                        String imgUrl = items.getJSONObject(i).getString("image_url");
-                        String recipeId = items.getJSONObject(i).getString("recipe_id");
-
-                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer(), recipeId));
-
-                    }
-                    Log.d("RECIPES TEST", "onSuccess: " + items.toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, link);
-
-    }
+//    public void fetchRecipes(String link) {
+//        client = new Food2ForkClient();
+//        client.getRecept(new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                JSONArray items = null;
+//                try {
+//                    items = response.getJSONArray("recipes");
+//                    recipeAdapter.clear();
+//                    for (int i = 0; i < items.length(); i++) {
+//
+//                        String name = items.getJSONObject(i).getString("title");
+//                        String imgUrl = items.getJSONObject(i).getString("image_url");
+//                        String recipeId = items.getJSONObject(i).getString("recipe_id");
+//
+//                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer(), recipeId));
+//
+//                    }
+//                    Log.d("RECIPES TEST", "onSuccess: " + items.toString());
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, link);
+//
+//    }
 
     private int timeRandomizer() {
         int x = timeR.nextInt(75 - 10) + 10;

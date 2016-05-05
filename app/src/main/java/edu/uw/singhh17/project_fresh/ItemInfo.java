@@ -14,11 +14,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
+
 
 public class ItemInfo extends Fragment {
 
     private String name;
     private int expireInfo;
+    private String imageUrl;
 
     private OnFragmentInteractionListener mListener;
 
@@ -33,6 +36,7 @@ public class ItemInfo extends Fragment {
         if (getArguments() != null) {
             name = getArguments().getString("name");
             expireInfo = getArguments().getInt("expireInfo");
+            imageUrl = getArguments().getString("imageUrl");
         }
 
     }
@@ -46,11 +50,14 @@ public class ItemInfo extends Fragment {
 
         TextView itemName = (TextView) rootView.findViewById(R.id.itemName);
         TextView expInfo = (TextView) rootView.findViewById(R.id.expireInfo);
+        ImageView itemImg = (ImageView) rootView.findViewById(R.id.itemImage);
 
         ImageView indicator = (ImageView) rootView.findViewById(R.id.colorIndicator);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
 
         itemName.setText(name);
+        new DownloadImageTask(itemImg)
+                .execute(imageUrl);
 
         if (expireInfo > 7) {
             Log.d("TEST days left", "getView: " + expireInfo);

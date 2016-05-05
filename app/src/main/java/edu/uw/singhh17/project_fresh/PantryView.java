@@ -52,6 +52,10 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 
         final PantryData data[] = new PantryData[] {};
 
+//        ParseObject newObject = new ParseObject("Pantry");
+//        newObject.put("shoppingList", pantryShopping);
+//        newObject.saveInBackground();
+
 //        {
 //                new PantryData("Cheddar Cheese", 2),
 //                new PantryData("Milk", 2),
@@ -67,8 +71,6 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 
         final ArrayList<PantryData> parseData = new ArrayList<PantryData>();
 
-
-
         final View rootView = inflater.inflate(R.layout.fragment_pantry_view, container, false);
 
         final PantryAdapter pAdapter = new PantryAdapter(getActivity(), R.layout.row_pantry, parseData);
@@ -76,6 +78,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
         pantryView.setAdapter(pAdapter);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
+        query.orderByAscending("daysLeft");
         query.findInBackground(new FindCallback<ParseObject>() {
 
             @Override
@@ -90,7 +93,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 //                           parseData.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
 //                            data[i] = new PantryData(p.getString("item"), p.getInt("daysLeft"));
 
-                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft")));
+                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"), p.getString("imageUrl")));
 
                         }
                     }
@@ -106,6 +109,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
                 Bundle bundle = new Bundle();
                 bundle.putString("name", parseData.get(position).name);
                 bundle.putInt("expireInfo", parseData.get(position).daysLeft);
+                bundle.putString("imageUrl", parseData.get(position).imageUrl);
                 ItemInfo itemObj = new ItemInfo();
                 itemObj.setArguments(bundle);
 

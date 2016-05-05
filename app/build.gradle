@@ -29,4 +29,5 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     compile 'com.google.zxing:core:3.2.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }

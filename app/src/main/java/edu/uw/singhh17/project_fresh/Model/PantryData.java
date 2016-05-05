@@ -10,11 +10,11 @@ public class PantryData {
 
     public String name;
     public int daysLeft;
-    //public image
-    //public color
+    public String imageUrl;
 
-    public PantryData(String name, int daysLeft) {
+    public PantryData(String name, int daysLeft, String imageUrl) {
         this.name = name;
         this.daysLeft = daysLeft;
+        this.imageUrl = imageUrl;
     }
 }

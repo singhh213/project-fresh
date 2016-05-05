@@ -14,12 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +52,7 @@ public class RecipeDetail extends Fragment {
     private String recipeDiff;
     private String recipeName;
     private String recipeImgUrl;
+    private String recipeId;
     private TextView name;
     private TextView time;
     private TextView difficulty;
@@ -98,7 +106,74 @@ public class RecipeDetail extends Fragment {
         AdapterView igView = (AdapterView) rootView.findViewById(R.id.igList);
         igView.setAdapter(igAdapter);
 
-        fetchRecipes(recipeUrl);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
+        query.getInBackground(recipeId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+//                    if (objects.size() > 0) {
+
+//                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = object;
+
+                            List<String> instructions = p.getList("Instructions");
+                            Map<String, String> ingred = p.getMap("Ingredients");
+
+                            for (String key : ingred.keySet()) {
+                                igAdapter.add(new Ingredient(key, ingred.get(key)));
+
+                            }
+
+                            for (int i = 0; i < instructions.size(); i++ ) {
+                                website.append((i + 1) + ") " + instructions.get(i));
+                                website.append("\n");
+                                website.append("\n");
+
+                            }
+
+//                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+//                                    p.getInt("CookTime"), p.getString("Difficulty"), "12321"));
+
+
+//                        }
+//                    }
+
+                }
+
+            }
+        });
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//
+//            @Override
+//            public void done(List<ParseObject> objects, ParseException e) {
+//                if (e == null) {
+//                    if (objects.size() > 0) {
+//
+//                        for (int i = 0; i < objects.size(); i++) {
+//                            ParseObject p = objects.get(i);
+//
+//                            List<String> instructions = p.getList("Instructions");
+//                            Map<String, String> ingred = p.getMap("Ingredients");
+//
+//                            for (String key : ingred.keySet()) {
+//                                igAdapter.add(new Ingredient(key, ingred.get(key)));
+//
+//                            }
+//                            website.setText(instructions.toString());
+//
+////                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+////                                    p.getInt("CookTime"), p.getString("Difficulty"), "12321"));
+//
+//
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//        });
+
+//        fetchRecipes(recipeUrl);
 
         return rootView;
     }
@@ -124,6 +199,7 @@ public class RecipeDetail extends Fragment {
             recipeDiff = getArguments().getString("recipeDiff");
             recipeName = getArguments().getString("recipeName");
             recipeImgUrl = getArguments().getString("recipeImg");
+            recipeId = getArguments().getString("recipeId");
         }
     }
 
