@@ -2,6 +2,7 @@ package edu.uw.singhh17.project_fresh.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,21 @@ public class IngredientsAdapter extends ArrayAdapter<Ingredient> {
         TextView igName = (TextView) row.findViewById(R.id.ingred_name);
         TextView igAmount = (TextView) row.findViewById(R.id.ingred_amount);
 
+        String name = ingredients.get(position).getName();
+
+        if (name.equals("Milk") || name.equals("Cheddar Cheese") || name.equals("Yogurt") ||
+                name.equals("Bacon") || name.equals("Flour") || name.equals("7 Grain Bread") ||
+                name.equals("Chicken Breast") || name.equals("Eggs")) {
+            igName.setTextColor(Color.GREEN);
+            igAmount.setTextColor(Color.GREEN);
+        } else {
+            igName.setTextColor(Color.RED);
+            igAmount.setTextColor(Color.RED);
+        }
+
         igName.setText(ingredients.get(position).getName());
         igAmount.setText(ingredients.get(position).getAmount());
+
 
         return row;
     }

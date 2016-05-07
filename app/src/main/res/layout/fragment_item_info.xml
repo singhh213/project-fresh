@@ -10,13 +10,12 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:id="@+id/itemImage"
-        android:src="@mipmap/ic_launcher"/>
+        android:id="@+id/itemImage" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="247dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="5dp">
 
@@ -47,5 +46,12 @@
         android:layout_marginRight="20dp"
         android:layout_gravity="right|top"
         android:background="@drawable/circle"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nutrtionLabel"
+        android:layout_gravity="center"
+        android:cropToPadding="false" />
 
 </FrameLayout>

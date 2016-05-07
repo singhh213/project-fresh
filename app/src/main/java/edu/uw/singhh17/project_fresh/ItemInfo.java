@@ -22,6 +22,7 @@ public class ItemInfo extends Fragment {
     private String name;
     private int expireInfo;
     private String imageUrl;
+    private String nutritionUrl;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,6 +38,7 @@ public class ItemInfo extends Fragment {
             name = getArguments().getString("name");
             expireInfo = getArguments().getInt("expireInfo");
             imageUrl = getArguments().getString("imageUrl");
+            nutritionUrl = getArguments().getString("nutritionUrl");
         }
 
     }
@@ -51,6 +53,7 @@ public class ItemInfo extends Fragment {
         TextView itemName = (TextView) rootView.findViewById(R.id.itemName);
         TextView expInfo = (TextView) rootView.findViewById(R.id.expireInfo);
         ImageView itemImg = (ImageView) rootView.findViewById(R.id.itemImage);
+        ImageView nutritionLabel = (ImageView) rootView.findViewById(R.id.nutrtionLabel);
 
         ImageView indicator = (ImageView) rootView.findViewById(R.id.colorIndicator);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
@@ -58,6 +61,9 @@ public class ItemInfo extends Fragment {
         itemName.setText(name);
         new DownloadImageTask(itemImg)
                 .execute(imageUrl);
+
+        new DownloadImageTask(nutritionLabel)
+                .execute(nutritionUrl);
 
         if (expireInfo > 7) {
             Log.d("TEST days left", "getView: " + expireInfo);

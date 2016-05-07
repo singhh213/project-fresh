@@ -1,6 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +37,9 @@ import cz.msebera.android.httpclient.Header;
 import edu.uw.singhh17.project_fresh.Adapters.IngredientsAdapter;
 import edu.uw.singhh17.project_fresh.Adapters.PantryAdapter;
 import edu.uw.singhh17.project_fresh.Model.Ingredient;
+import edu.uw.singhh17.project_fresh.Model.PantryData;
 import edu.uw.singhh17.project_fresh.Model.RecipeObject;
+import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
 import edu.uw.singhh17.project_fresh.Utils.Food2ForkClient;
 
@@ -56,7 +61,7 @@ public class RecipeDetail extends Fragment {
     private TextView name;
     private TextView time;
     private TextView difficulty;
-    private TextView website;
+    private TextView instructions;
     private IngredientsAdapter igAdapter;
     private OnFragmentInteractionListener mListener;
 
@@ -74,10 +79,62 @@ public class RecipeDetail extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
+        final ArrayList<String> pantryList = new ArrayList<>();
+        final ArrayList<String> shoppingList = new ArrayList<>();
+
+        ParseQuery<ParseObject> pQuery = ParseQuery.getQuery("Pantry");
+        pQuery.orderByAscending("daysLeft");
+        pQuery.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+                            pantryList.add(p.getString("item"));
+                            Log.d("PANTRYLIST", "done: " + p.getString("item"));
+
+                        }
+                    }
+
+                }
+            }
+        });
+
+        ParseQuery<ParseObject> sQuery = ParseQuery.getQuery("ShoppingList");
+        sQuery.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+
+                            for (String name : p.getMap("shoppingList").keySet()) {
+                                shoppingList.add(name);
+                                Log.d("ShoppingList", "done: " + name);
+                            }
+
+
+
+                        }
+                    }
+
+                }
+
+            }
+        });
+
         name = (TextView) rootView.findViewById(R.id.recipe_dname);
         time = (TextView) rootView.findViewById(R.id.recipe_dtime);
         difficulty = (TextView) rootView.findViewById(R.id.recipe_ddifficulty);
-        website = (TextView) rootView.findViewById(R.id.recipe_website);
+        instructions = (TextView) rootView.findViewById(R.id.recipe_instructions);
+        Button addButton = (Button) rootView.findViewById(R.id.add_ingred_button);
+
 
         ImageView img = (ImageView) rootView.findViewById(R.id.recipe_dimage);
 
@@ -99,11 +156,55 @@ public class RecipeDetail extends Fragment {
 
         difficulty.setText(recipeDiff);
 
-        ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+        final ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> shopNeed  = new ArrayList<String>();
+                for (Ingredient x : ingredients) {
+                    String name = x.getName();
+                    String amount = x.getAmount();
+
+                    if (!pantryList.contains(name) || !shoppingList.contains(name)) {
+                        shopNeed.add(name);
+                        Log.d("RECIPE SHOPPING", "onClick: " + name);
+                    }
+                }
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");
+                query.getInBackground("IAf5ywmpFM", new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null) {
+
+                            ParseObject p = object;
+                            Map<String, Boolean> ingred = p.getMap("shoppingList");
+
+                            for (String key : ingred.keySet()) {
+                                Log.d("REAL MAP", "done: " + ingred);
+                            }
+
+                            for (String name : shopNeed) {
+                                ingred.put(name, false);
+                            }
+
+                            object.put("shoppingList", ingred);
+                            object.saveInBackground();
+
+                        }
+
+                    }
+                });
+
+            }
+        });
+
 
 
         igAdapter = new IngredientsAdapter(getActivity(), R.layout.row_recipe_ingredients, ingredients);
-        AdapterView igView = (AdapterView) rootView.findViewById(R.id.igList);
+        final AdapterView igView = (AdapterView) rootView.findViewById(R.id.igList);
         igView.setAdapter(igAdapter);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
@@ -111,69 +212,30 @@ public class RecipeDetail extends Fragment {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
-//                    if (objects.size() > 0) {
 
-//                        for (int i = 0; i < objects.size(); i++) {
-                            ParseObject p = object;
+                    ParseObject p = object;
 
-                            List<String> instructions = p.getList("Instructions");
-                            Map<String, String> ingred = p.getMap("Ingredients");
+                    List<String> instructs = p.getList("Instructions");
+                    Map<String, String> ingred = p.getMap("Ingredients");
 
-                            for (String key : ingred.keySet()) {
-                                igAdapter.add(new Ingredient(key, ingred.get(key)));
+                    for (String key : ingred.keySet()) {
+                        ingredients.add(new Ingredient(key, ingred.get(key)));
+                        ((BaseAdapter) igView.getAdapter()).notifyDataSetChanged();
 
-                            }
+//                                igAdapter.add(new Ingredient(key, ingred.get(key)));
 
-                            for (int i = 0; i < instructions.size(); i++ ) {
-                                website.append((i + 1) + ") " + instructions.get(i));
-                                website.append("\n");
-                                website.append("\n");
+                    }
 
-                            }
+                    for (int i = 0; i < instructs.size(); i++ ) {
+                        instructions.append((i + 1) + ") " + instructs.get(i));
+                        instructions.append("\n");
+                        instructions.append("\n");
 
-//                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-//                                    p.getInt("CookTime"), p.getString("Difficulty"), "12321"));
-
-
-//                        }
-//                    }
-
+                    }
                 }
 
             }
         });
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//
-//            @Override
-//            public void done(List<ParseObject> objects, ParseException e) {
-//                if (e == null) {
-//                    if (objects.size() > 0) {
-//
-//                        for (int i = 0; i < objects.size(); i++) {
-//                            ParseObject p = objects.get(i);
-//
-//                            List<String> instructions = p.getList("Instructions");
-//                            Map<String, String> ingred = p.getMap("Ingredients");
-//
-//                            for (String key : ingred.keySet()) {
-//                                igAdapter.add(new Ingredient(key, ingred.get(key)));
-//
-//                            }
-//                            website.setText(instructions.toString());
-//
-////                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-////                                    p.getInt("CookTime"), p.getString("Difficulty"), "12321"));
-//
-//
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//        });
-
-//        fetchRecipes(recipeUrl);
 
         return rootView;
     }
@@ -203,50 +265,6 @@ public class RecipeDetail extends Fragment {
         }
     }
 
-    public void fetchRecipes(String link) {
-        Food2ForkClient client = new Food2ForkClient();
-        client.getRecept(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    JSONObject item = response.getJSONObject("recipe");
-
-                    JSONArray ingredients = item.getJSONArray("ingredients");
-
-                    Log.d("RECIPE DETAIL", "onSuccess: " + ingredients.toString());
-
-
-                    for (int i = 0; i < ingredients.length(); i++) {
-                        igAdapter.add(new Ingredient(ingredients.get(i).toString(), ""));
-
-
-
-                    }
-                    website.setText(item.getString("source_url"));
-
-
-
-
-//                    recipeAdapter.clear();
-//                    for (int i = 0; i < items.length(); i++) {
-//
-//                        String name = items.getJSONObject(i).getString("title");
-//                        String imgUrl = items.getJSONObject(i).getString("image_url");
-//                        String recipeId = items.getJSONObject(i).getString("recipe_id");
-//
-//                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer(), recipeId));
-//
-//                    }
-
-                    Log.d("RECIPES TEST", "onSuccess: " + item.toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, recipeUrl);
-
-    }
 
     @Override
     public void onDetach() {
