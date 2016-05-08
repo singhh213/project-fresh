@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="325dp"
         android:layout_gravity="center_horizontal|bottom">
             <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->
@@ -29,11 +29,14 @@
     </ScrollView>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/itemImage" />
 
             <LinearLayout
@@ -41,10 +44,13 @@
                 android:layout_width="247dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
+                android:id="@+id/linearLayout"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:layout_width="277dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Large Text"
@@ -53,22 +59,46 @@
                     android:layout_marginLeft="15dp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Small Text"
+                    android:id="@+id/itemAmount"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
                     android:layout_width="185dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Small Text"
                     android:id="@+id/expireInfo"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="15dp" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:id="@+id/colorIndicator"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_gravity="right|top"
-                android:background="@drawable/circle"/>
+                android:background="@drawable/circle"
+                android:layout_alignBottom="@+id/itemImage"
+                android:layout_toRightOf="@+id/linearLayout"
+                android:layout_toEndOf="@+id/linearLayout"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="19dp" />
+
+    <Button
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:text="Add to Shopping List"
+        android:id="@+id/iteminfo_add_button"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@drawable/recipe_border"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 
 </FrameLayout>

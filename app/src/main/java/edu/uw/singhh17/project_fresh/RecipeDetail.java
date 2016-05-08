@@ -166,12 +166,12 @@ public class RecipeDetail extends Fragment {
 
                             object.put("shoppingList", ingred);
                             object.saveInBackground();
-                            addButton.setText("Added to Shopping List");
-                            addButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.actionBarGreen));
-                            addButton.setTextColor(Color.WHITE);
                         }
                     }
                 });
+                addButton.setText("Added to Shopping List");
+                addButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.actionBarGreen));
+                addButton.setTextColor(Color.WHITE);
             }
 
 

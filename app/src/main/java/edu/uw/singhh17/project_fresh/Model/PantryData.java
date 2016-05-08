@@ -14,11 +14,13 @@ public class PantryData {
     public int daysLeft;
     public String imageUrl;
     public String nutritionLabel;
+    public String quantity;
 
-    public PantryData(String name, int daysLeft, String imageUrl, String nutritionLabel) {
+    public PantryData(String name, int daysLeft, String imageUrl, String nutritionLabel, String quantity) {
         this.name = name;
         this.daysLeft = daysLeft;
         this.imageUrl = imageUrl;
         this.nutritionLabel = nutritionLabel;
+        this.quantity = quantity;
     }
 }

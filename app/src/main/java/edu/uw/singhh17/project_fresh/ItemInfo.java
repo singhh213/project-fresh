@@ -11,8 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import org.w3c.dom.Text;
+
+import java.util.Map;
 
 import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
 
@@ -23,6 +33,7 @@ public class ItemInfo extends Fragment {
     private int expireInfo;
     private String imageUrl;
     private String nutritionUrl;
+    private String quantity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -39,6 +50,7 @@ public class ItemInfo extends Fragment {
             expireInfo = getArguments().getInt("expireInfo");
             imageUrl = getArguments().getString("imageUrl");
             nutritionUrl = getArguments().getString("nutritionUrl");
+            quantity = getArguments().getString("quantity");
         }
     }
 
@@ -53,11 +65,15 @@ public class ItemInfo extends Fragment {
         TextView expInfo = (TextView) rootView.findViewById(R.id.expireInfo);
         ImageView itemImg = (ImageView) rootView.findViewById(R.id.itemImage);
         ImageView nutritionLabel = (ImageView) rootView.findViewById(R.id.nutrtionLabel);
+        TextView itemQuantity = (TextView) rootView.findViewById(R.id.itemAmount);
+        final Button addItem = (Button) rootView.findViewById(R.id.iteminfo_add_button);
 
         ImageView indicator = (ImageView) rootView.findViewById(R.id.colorIndicator);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
 
         itemName.setText(name);
+        itemQuantity.setText(quantity);
+
         new DownloadImageTask(itemImg)
                 .execute(imageUrl);
 
@@ -75,7 +91,36 @@ public class ItemInfo extends Fragment {
             bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_red));
         }
 
-        expInfo.setText("Expires in " + Integer.toString(expireInfo) + " days");
+        if (expireInfo > 0) {
+            expInfo.setText("Expires in " + Integer.toString(expireInfo) + " days");
+        } else {
+            expInfo.setText("Expired");
+        }
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");
+                query.getInBackground("IAf5ywmpFM", new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null) {
+
+                            Map<String, Boolean> shoppingList = object.getMap("shoppingList");
+                            shoppingList.put(name, false);
+
+                            object.put("shoppingList", shoppingList);
+                            object.saveInBackground();
+                            addItem.setText("Added to Shopping List");
+                            addItem.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.actionBarGreen));
+                            addItem.setTextColor(Color.WHITE);
+                        }
+                    }
+                });
+            }
+        });
 
         return rootView;
     }
