@@ -27,7 +27,7 @@
     <ImageButton
         android:layout_width="75dp"
         android:layout_height="62dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/filterButton"
         android:layout_gravity="right|top"
         android:src="@drawable/ic_recipe_menu_icon"
         android:background="#ffffff" />

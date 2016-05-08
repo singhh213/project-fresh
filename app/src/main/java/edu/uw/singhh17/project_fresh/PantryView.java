@@ -31,8 +31,6 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
         // Required empty public constructor
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,25 +47,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 
         getActivity().setTitle("PANTRY");
 
-
         final PantryData data[] = new PantryData[] {};
-
-//        ParseObject newObject = new ParseObject("Pantry");
-//        newObject.put("shoppingList", pantryShopping);
-//        newObject.saveInBackground();
-
-//        {
-//                new PantryData("Cheddar Cheese", 2),
-//                new PantryData("Milk", 2),
-//                new PantryData("Bacon", 3),
-//                new PantryData("Egg", 5),
-//                new PantryData("Yogurt", 7),
-//                new PantryData("Peanut Butter", 8),
-//                new PantryData("Bread", 4),
-//                new PantryData("Crackers", 16),
-//                new PantryData("Apples", 5),
-//                new PantryData("Juice", 8)
-//        };
 
         final ArrayList<PantryData> parseData = new ArrayList<PantryData>();
 

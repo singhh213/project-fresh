@@ -40,7 +40,6 @@ public class ItemInfo extends Fragment {
             imageUrl = getArguments().getString("imageUrl");
             nutritionUrl = getArguments().getString("nutritionUrl");
         }
-
     }
 
     @Override
@@ -77,10 +76,6 @@ public class ItemInfo extends Fragment {
         }
 
         expInfo.setText("Expires in " + Integer.toString(expireInfo) + " days");
-
-//        itemName.setText(name);
-//        expInfo.setText(Integer.toString(expireInfo));
-
 
         return rootView;
     }

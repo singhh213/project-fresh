@@ -76,73 +76,6 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
-
-//        pantryShopping.put("Cheddar Cheese", false);
-//        pantryShopping.put("Milk", false);
-//        pantryShopping.put("Pizza", false);
-//        pantryShopping.put("Corn", false);
-//        pantryShopping.put("Avocado", false);
-//
-//        ParseObject newObject = new ParseObject("ShoppingList");
-//        newObject.put("user", "Harpreet");
-//        newObject.put("shoppingList", pantryShopping);
-//        newObject.saveInBackground();
-
-
-//        Map<String, String> map = new HashMap<>();
-//        map.put("Potatoes", "12 whole");
-//        map.put("Olive Oil", "3 tablepoons");
-//        map.put("Kosher Salt", "1 teaspoon");
-//
-//        ArrayList<String> instructions = new ArrayList<>();
-//        instructions.add("Bring a pot of salted water to a boil. Add in as many potatoes as you wish to make and cook them until they are fork-tender.");
-//        instructions.add("On a sheet pan, generously drizzle olive oil. Place tender potatoes on the cookie sheet leaving plenty of room between each potato.");
-//        instructions.add("With a potato masher, gently press down each potato until it slightly mashes, rotate the potato masher 90 degrees and mash again. Brush the tops of each crushed potato generously with more olive oil.");
-//        instructions.add("Sprinkle potatoes with kosher salt, fresh ground black pepper and fresh chopped rosemary ");
-//        instructions.add("Bake in a 450 degree oven for 20-25 minutes until golden brown.");
-////        instructions.add("Bring a pot of water to a boil and add as many potatoes as you want.");
-//
-//
-//        ParseObject newObject = new ParseObject("Recipes");
-//        newObject.put("Name", "Crash Hot Potatoes");
-//        newObject.put("CookTime", 25);
-//        newObject.put("Difficulty", "Easy");
-//        newObject.put("Ingredients", map);
-//        newObject.put("Instructions", instructions);
-//        newObject.put("ImageUrl", "http://tastykitchen.com/recipes/wp-content/uploads/sites/2/2009/10/Crash-Hot-Potatoes-420x278.png");
-//        newObject.saveInBackground();
-
-
-//        Map<String, String> map = new HashMap<>();
-//        map.put("", "");
-//        map.put("", "");
-//        map.put("", "");
-//        map.put("", "");
-//        map.put("", "");
-//        map.put("", "");
-//        map.put("", "");
-//
-//        ArrayList<String> instructions = new ArrayList<>();
-//        instructions.add("");
-//        instructions.add("");
-//        instructions.add("");
-//        instructions.add("");
-//        instructions.add("");
-//
-//
-//
-//        ParseObject newObject = new ParseObject("Recipes");
-//        newObject.put("Name", "");
-//        newObject.put("CookTime", );
-//        newObject.put("Difficulty", "");
-//        newObject.put("ImageUrl", "");
-//        newObject.put("Ingredients", map);
-//        newObject.put("Instructions", instructions);
-//
-//        newObject.saveInBackground();
-
-
         //keyset (item names) of map turned into string array for list view adapter
         pantryShopping = new HashMap<>();
 
@@ -175,9 +108,7 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
 
                         }
                     }
-
                 }
-
             }
         });
 
@@ -206,7 +137,6 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
 
                 saveShoppingList();
                 ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-
             }
         });
 
@@ -258,8 +188,6 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
 
                 ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 
-
-
                 return true;
             case R.id.shopping_add:
 
@@ -272,14 +200,6 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showDialog() {
-        android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
-        AddItemDialog addItem = new AddItemDialog();
-//        addItem.setTargetFragment(this, 0);
-//        addItem.setTargetFragment(this, 0);
-        addItem.show(fragmentManager, "dialog");
     }
 
     @Override

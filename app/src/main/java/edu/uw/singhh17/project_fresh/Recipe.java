@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -39,14 +43,7 @@ import edu.uw.singhh17.project_fresh.Utils.Food2ForkClient;
 public class Recipe extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private final String API_GET_URL = "http://food2fork.com/api/get?key=5253bcb47c6a8f4bbe9624f2388bc2e4&rId=";
-    private final String API_SEARCH_URL = "http://food2fork.com/api/search?key=5253bcb47c6a8f4bbe9624f2388bc2e4&q=";
-    private Food2ForkClient client;
     private RecipeAdapter recipeAdapter;
-    private Random timeR;
-    private Random diffR;
-    private final String[] difficulty = {"Easy", "Medium", "Hard"};
-
 
     public Recipe() {
         // Required empty public constructor
@@ -103,8 +100,6 @@ public class Recipe extends Fragment {
         search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String query) {
-
-
                 ParseQuery<ParseObject> q = ParseQuery.getQuery("Recipes");
                 q.findInBackground(new FindCallback<ParseObject>() {
 
@@ -115,22 +110,15 @@ public class Recipe extends Fragment {
                                 recipeAdapter.clear();
                                 for (int i = 0; i < objects.size(); i++) {
                                     ParseObject p = objects.get(i);
-//                            Map<String, String> ingredients = p.getMap("Ingredients");
-//                            List<String> instructions = p.getList("Instructions");
                                     if (p.getString("Name").toLowerCase().contains(query.toLowerCase())) {
                                         recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
                                                 p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
                                     }
                                 }
                             }
-
                         }
-
                     }
                 });
-
-//                fetchRecipes(API_SEARCH_URL + query);
-//                Toast.makeText(getContext(), "Our word : " + query, Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -140,15 +128,7 @@ public class Recipe extends Fragment {
             }
         });
 
-
-        timeR = new Random();
-        diffR = new Random();
-
         final ArrayList<RecipeObject> recipeData = new ArrayList<RecipeObject>();
-
-
-//        String[] names = {"Toast", "Mac & Cheese", "Pizza", "Cake", "Alfredo Pasta"};
-//        int[] images = {R.drawable.ic_home_button, R.drawable.ic_recipe_button, R.drawable.ic_settings_button, R.drawable.ic_scan_button, R.drawable.ic_shopping_list};
 
         recipeAdapter = new RecipeAdapter(getActivity(), R.layout.row_recipe, recipeData);
         GridView gv = (GridView) rootView.findViewById(R.id.gridView);
@@ -168,24 +148,17 @@ public class Recipe extends Fragment {
 
                             recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
                                     p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
-
-
                         }
                     }
-
                 }
-
             }
         });
-
-//        fetchRecipes(API_SEARCH_URL);
 
         gv.setOnItemClickListener(new GridView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("recipeUrl", API_GET_URL + recipeData.get(position).getRecipeId());
                 bundle.putString("recipeId", recipeData.get(position).getRecipeId());
                 bundle.putInt("recipeTime", recipeData.get(position).getTime());
                 bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
@@ -195,7 +168,6 @@ public class Recipe extends Fragment {
                 recipeDetail.setArguments(bundle);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
                 FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.container1, recipeDetail);
                 ft.addToBackStack(null);
@@ -203,47 +175,68 @@ public class Recipe extends Fragment {
             }
         });
 
+        final ImageButton filterButton = (ImageButton) rootView.findViewById(R.id.filterButton);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getActivity(), filterButton);
+                popup.getMenuInflater().inflate(R.menu.recipe_filter_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.alpha_filter:
+
+                                filterRecipes("Name");
+                                return true;
+                            case R.id.cooktime_filter:
+
+                                filterRecipes("CookTime");
+                                return true;
+                            case R.id.difficulty_filter:
+
+                                filterRecipes("DifficultyNumber");
+                                return true;
+
+                            case R.id.favorites_filter:
+                                return true;
+
+                            case R.id.expiration_filter:
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
+
+
         return rootView;
     }
 
-//    public void fetchRecipes(String link) {
-//        client = new Food2ForkClient();
-//        client.getRecept(new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                JSONArray items = null;
-//                try {
-//                    items = response.getJSONArray("recipes");
-//                    recipeAdapter.clear();
-//                    for (int i = 0; i < items.length(); i++) {
-//
-//                        String name = items.getJSONObject(i).getString("title");
-//                        String imgUrl = items.getJSONObject(i).getString("image_url");
-//                        String recipeId = items.getJSONObject(i).getString("recipe_id");
-//
-//                        recipeAdapter.add(new RecipeObject(name, imgUrl, timeRandomizer(), difficultyRandomizer(), recipeId));
-//
-//                    }
-//                    Log.d("RECIPES TEST", "onSuccess: " + items.toString());
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, link);
-//
-//    }
+    public void filterRecipes(String sortKey) {
+        ParseQuery<ParseObject> dQuery = ParseQuery.getQuery("Recipes");
+        dQuery.orderByAscending(sortKey);
+        dQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        recipeAdapter.clear();
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+                            recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                        }
+                    }
+                }
+            }
+        });
 
-    private int timeRandomizer() {
-        int x = timeR.nextInt(75 - 10) + 10;
-        return x % 5 * 5 + 10;
     }
-
-    private String difficultyRandomizer() {
-        int x = diffR.nextInt(3);
-        return difficulty[x];
-    }
-
 
     @Override
     public void onAttach(Context context) {
