@@ -1,6 +1,8 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,8 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.WrapperListAdapter;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuAdapter;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -26,6 +38,8 @@ import edu.uw.singhh17.project_fresh.Model.PantryData;
 public class PantryView extends Fragment implements ItemInfo.OnFragmentInteractionListener {
 
     private OnFragmentInteractionListener mListener;
+    private PantryAdapter pAdapter;
+    private ArrayList<PantryData> parseData;
 
     public PantryView() {
         // Required empty public constructor
@@ -47,41 +61,95 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
 
         getActivity().setTitle("PANTRY");
 
-        final PantryData data[] = new PantryData[] {};
-
-        final ArrayList<PantryData> parseData = new ArrayList<PantryData>();
+        parseData = new ArrayList<>();
 
         final View rootView = inflater.inflate(R.layout.fragment_pantry_view, container, false);
 
-        final PantryAdapter pAdapter = new PantryAdapter(getActivity(), R.layout.row_pantry, parseData);
-        AdapterView pantryView = (AdapterView)rootView.findViewById(R.id.pantryList);
-        pantryView.setAdapter(pAdapter);
+        SwipeMenuListView listView = (SwipeMenuListView) rootView.findViewById(R.id.listView);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
-        query.orderByAscending("daysLeft");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
 
             @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    if (objects.size() > 0) {
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(100);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete_button);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
 
-                        for (int i = 0; i < objects.size(); i++) {
-                            ParseObject p = objects.get(i);
+        listView.setMenuCreator(creator);
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
 
-                            Log.d("TEST", "done: " + p.getString("item"));
-//                           parseData.add(new PantryData(p.getString("item"), p.getInt("daysLeft")));
-//                            data[i] = new PantryData(p.getString("item"), p.getInt("daysLeft"));
+        pAdapter = new PantryAdapter(getActivity(), R.layout.row_pantry, parseData);
+        final AdapterView pantryView = (AdapterView)rootView.findViewById(R.id.listView);
+        pantryView.setAdapter(pAdapter);
 
-                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"),
-                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity")));
 
+
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                if(index == 0) {
+                    Log.d("DELETE Button test", "onMenuItemClick: " + position + " " + parseData.get(position).objectId);
+
+//                    PantryData toRemove =
+//                    Log.d("Remove pantry", "done: " + toRemove.name + " " + position);
+//                    pAdapter.remove(pAdapter.getItem(position));
+
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
+                    query.getInBackground(parseData.get(position).objectId, new GetCallback<ParseObject>() {
+                        public void done(ParseObject object, ParseException e) {
+                            if (object != null) {
+                                Log.d("score", "" + parseData.get(position).objectId);
+//                                object.deleteInBackground(new DeleteCallback() {
+//                                    @Override
+//                                    public void done(ParseException e) {
+//
+////                                        PantryData toRemove = pAdapter.getItem(position);
+////                                        Log.d("Remove pantry", "done: " + toRemove.name + " " + position);
+////
+////                                        pAdapter.remove(toRemove);
+////                                        parseData.remove(new PantryData(null,0,null,null,null,parseData.get(position).objectId));
+////                                        getPantryItems();
+////                                        ((BaseAdapter) ((SwipeMenuAdapter) pantryView.getAdapter()).getWrappedAdapter()).notifyDataSetChanged();
+//
+//
+//                                    }
+//                                });
+
+                                object.deleteInBackground();
+
+
+//                                for (PantryData x : parseData) {
+//                                    Log.d("pantryleftover", "done: " + x.name+ " " + x.objectId);
+//                                }
+//                                ((BaseAdapter) ((SwipeMenuAdapter) pantryView.getAdapter()).getWrappedAdapter()).notifyDataSetChanged();
+//                                getPantryItems();
+                            }
                         }
-                    }
+                    });
+
+                    parseData.remove(position);
+                    pAdapter.notifyDataSetChanged();
+                    pantryView.setAdapter(pAdapter);
 
                 }
+                // false : close the menu; true : not close the menu
+                return false;
             }
         });
+
+        getPantryItems();
 
         pantryView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -125,6 +193,33 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void getPantryItems() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
+        query.orderByAscending("daysLeft");
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        pAdapter.clear();
+
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+
+                            parseData.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"),
+                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity"), p.getObjectId()));
+
+//                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"),
+//                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity"), p.getObjectId()));
+
+                        }
+                    }
+                }
+            }
+        });
     }
 
     /**

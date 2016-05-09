@@ -13,9 +13,9 @@
         android:id="@+id/difficulty_filter"
         android:title="Difficulty"/>
 
-    <item
-        android:id="@+id/favorites_filter"
-        android:title="Favorites"/>
+    <!--<item-->
+        <!--android:id="@+id/favorites_filter"-->
+        <!--android:title="Favorites"/>-->
 
     <item
         android:id="@+id/expiration_filter"

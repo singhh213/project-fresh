@@ -66,6 +66,12 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
 
         expInfo.setText("Expires in " + Integer.toString(daysLeft) + " days");
 
+        if (daysLeft > 0) {
+            expInfo.setText("Expires in " + Integer.toString(daysLeft) + " days");
+        } else {
+            expInfo.setText("Expired");
+        }
+
         return row;
     }
 

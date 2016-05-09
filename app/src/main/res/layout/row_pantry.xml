@@ -45,8 +45,8 @@
             android:textSize="15sp"
             android:lines="1"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/colorIndicator"
-            android:layout_toStartOf="@+id/colorIndicator" />
+            android:layout_alignRight="@+id/colorIndicator"
+            android:layout_alignEnd="@+id/colorIndicator" />
 
         <TextView
             android:layout_width="288dp"

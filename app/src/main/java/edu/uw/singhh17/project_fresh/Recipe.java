@@ -36,6 +36,7 @@ import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import edu.uw.singhh17.project_fresh.Adapters.RecipeAdapter;
+import edu.uw.singhh17.project_fresh.Model.PantryData;
 import edu.uw.singhh17.project_fresh.Model.RecipeObject;
 import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 import edu.uw.singhh17.project_fresh.Utils.Food2ForkClient;
@@ -199,11 +200,12 @@ public class Recipe extends Fragment {
 
                                 filterRecipes("DifficultyNumber");
                                 return true;
-
-                            case R.id.favorites_filter:
-                                return true;
+//
+//                            case R.id.favorites_filter:
+//                                return true;
 
                             case R.id.expiration_filter:
+                                getExpiringRecipes();
                                 return true;
                         }
                         return false;
@@ -257,5 +259,61 @@ public class Recipe extends Fragment {
 
     public interface OnFragmentInteractionListener {
 //        void onFragmentInteraction(Uri uri);
+    }
+
+    private void getExpiringRecipes() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Pantry");
+        query.orderByAscending("daysLeft");
+//        query.whereLessThan("daysLeft", 4);
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    final ArrayList<String> names = new ArrayList<>();
+                    if (objects.size() > 0) {
+
+
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+                            names.add(p.getString("item"));
+
+                        }
+                        Log.d("idk", "done: " + names.toString());
+
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
+                        query.findInBackground(new FindCallback<ParseObject>() {
+
+                            @Override
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if (e == null) {
+                                    if (objects.size() > 0) {
+                                        recipeAdapter.clear();
+                                        for (int i = 0; i < objects.size(); i++) {
+                                            ParseObject p = objects.get(i);
+
+                                            Map<String, String> ingredients = p.getMap("Ingredients");
+
+                                            String name1 = names.get(0);
+                                            String name2 = names.get(1);
+                                            String name3 = names.get(2);
+
+                                            Log.d("NAMES", "done: " + name1 + " " + name2 + " " + name3);
+
+                                            if (ingredients.keySet().contains(name1) || ingredients.keySet().contains(name2) || ingredients.keySet().contains(name3)) {
+                                                Log.d("RECIPES", "done: " + p.getString("Name"));
+                                                recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                }
+            }
+        });
     }
 }
