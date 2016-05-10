@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import edu.uw.singhh17.project_fresh.Model.PantryData;
 import edu.uw.singhh17.project_fresh.R;
 import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
@@ -43,7 +44,7 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
         TextView itemName = (TextView) row.findViewById(R.id.name);
         TextView expInfo = (TextView) row.findViewById(R.id.expireInfo);
         ImageView indicator = (ImageView) row.findViewById(R.id.colorIndicator);
-        ImageView itemImg = (ImageView) row.findViewById(R.id.itemImage);
+        CircleImageView itemImg = (CircleImageView) row.findViewById(R.id.itemImage);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
 
         itemName.setText(objects.get(position).name);

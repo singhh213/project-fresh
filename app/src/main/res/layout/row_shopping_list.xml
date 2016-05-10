@@ -12,6 +12,7 @@
         android:textSize="17sp"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:paddingStart="20dp"
         android:singleLine="false" />
 </LinearLayout>

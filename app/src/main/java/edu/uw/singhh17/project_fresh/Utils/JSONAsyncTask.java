@@ -58,6 +58,10 @@ public class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
                 newObject.put("item", obj.getString("item_name"));
                 newObject.put("brand", obj.getString("brand_name"));
                 newObject.put("daysLeft", 8);
+                newObject.put("quantity", "2 bags");
+                newObject.put("nutritionUrl", "http://i5.walmartimages.com/dfw/dce07b8c-f277/k2-_df6c917d-8c2a-470e-9c60-2a50916d0333.v1.jpg");
+                newObject.put("imageUrl", "http://i5.walmartimages.com/dfw/dce07b8c-75f2/k2-_e5b52ece-66a6-4a7f-9e5a-91b370054c71.v2.jpg");
+
                 newObject.saveInBackground();
 
                 // End reading...............
