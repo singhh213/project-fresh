@@ -1,6 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -15,6 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -22,6 +27,7 @@ import com.parse.ParseQuery;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
 import java.util.Map;
 
 import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
@@ -74,11 +80,38 @@ public class ItemInfo extends Fragment {
         itemName.setText(name);
         itemQuantity.setText(quantity);
 
-        new DownloadImageTask(itemImg)
-                .execute(imageUrl);
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        MemoryCache mc = imageLoader.getMemoryCache();
+        List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(imageUrl, mc);
 
-        new DownloadImageTask(nutritionLabel)
-                .execute(nutritionUrl);
+        if (!list.isEmpty()) {
+            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+            itemImg.setImageBitmap(list.get(0));
+        } else {
+            Log.d("FOUND", "onCreateView: " + "FALSE");
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            imageLoader.displayImage(imageUrl, itemImg, options);
+        }
+
+        List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
+
+        if (!list2.isEmpty()) {
+            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+            nutritionLabel.setImageBitmap(list2.get(0));
+        } else {
+            Log.d("FOUND", "onCreateView: " + "FALSE");
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            imageLoader.displayImage(nutritionUrl, nutritionLabel, options);
+        }
+
+
+//        new DownloadImageTask(itemImg)
+//                .execute(imageUrl);
+//
+//        new DownloadImageTask(nutritionLabel)
+//                .execute(nutritionUrl);
 
         if (expireInfo > 7) {
             Log.d("TEST days left", "getView: " + expireInfo);

@@ -6,15 +6,16 @@
         <item name="colorPrimary">@color/actionBarGreen</item>
         <item name="colorPrimaryDark">@color/bottomBarGreen</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <!--<item name="android:popupBackground">@color/actionBarGreen</item>-->
+        <!--<item name="android:popupMenuStyle">@style/PopupMenu</item>-->
         <!--<item name="actionBarStyle">@style/MyActionBarStyle</item>-->
         <!--<item name="android:actionBarStyle">@style/MyActionBarStyle</item>-->
     </style>
 
-    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
-        <item name="android:popupBackground">@color/actionBarGreen</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
+    <!--<style name="PopupMenu" parent="@android:style/Widget.Holo.PopupMenu">-->
+        <!--<item name="android:textColor">@android:color/white</item>-->
+        <!--<item name="android:popupBackground">@color/actionBarGreen</item>-->
+    <!--</style>-->
 
     <!--<style name="MyActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">-->
         <!--<item name="displayOptions">showCustom</item>-->

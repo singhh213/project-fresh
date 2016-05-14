@@ -15,6 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -62,8 +67,26 @@ public class RecipeAdapter extends ArrayAdapter<RecipeObject>{
         TextView time = (TextView) row.findViewById(R.id.recipe_time);
         TextView difficulty = (TextView) row.findViewById(R.id.recipe_difficulty);
 
-        new DownloadImageTask(img)
-                .execute(objects.get(position).getImgUrl());
+        String imageUrl = objects.get(position).getImgUrl();
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        MemoryCache mc = imageLoader.getMemoryCache();
+        List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(imageUrl, mc);
+
+        if (!list.isEmpty()) {
+            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+            img.setImageBitmap(list.get(0));
+        } else {
+            Log.d("FOUND", "onCreateView: " + "FALSE");
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            imageLoader.displayImage(imageUrl, img, options);
+        }
+
+
+
+//        new DownloadImageTask(img)
+//                .execute(objects.get(position).getImgUrl());
 
         name.setText(objects.get(position).getName());
 

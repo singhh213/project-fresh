@@ -1,6 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -87,9 +92,36 @@ public class RecipeDetail extends Fragment {
 
         ImageView img = (ImageView) rootView.findViewById(R.id.recipe_dimage);
 
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        MemoryCache mc = imageLoader.getMemoryCache();
 
-        new DownloadImageTask(img)
-                .execute(recipeImgUrl);
+        List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(recipeImgUrl, mc);
+
+        if (!list.isEmpty()) {
+            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+            img.setImageBitmap(list.get(0));
+        } else {
+            Log.d("FOUND", "onCreateView: " + "FALSE");
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            imageLoader.displayImage(recipeImgUrl, img, options);
+        }
+
+
+//        if (mc.keys().contains(recipeImgUrl)) {
+//            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+//            img.setImageBitmap(mc.get(recipeImgUrl));
+//        } else {
+//            Log.d("FOUND", "onCreateView: " + "FALSE");
+//
+//            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+//
+//            imageLoader.displayImage(recipeImgUrl, img, options);
+//        }
+
+
+//        new DownloadImageTask(img)
+//                .execute(recipeImgUrl);
 
         name.setText(recipeName);
         time.setText(recipeTime + " min");

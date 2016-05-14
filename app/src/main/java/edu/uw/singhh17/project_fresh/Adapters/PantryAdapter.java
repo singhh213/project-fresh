@@ -2,6 +2,7 @@ package edu.uw.singhh17.project_fresh.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -12,7 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.cache.memory.MemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import edu.uw.singhh17.project_fresh.Model.PantryData;
@@ -49,13 +56,33 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
 
         itemName.setText(objects.get(position).name);
         int daysLeft = objects.get(position).daysLeft;
-        new DownloadImageTask(itemImg)
-                .execute(objects.get(position).imageUrl);
 
-        Log.d("TEST days left", "getView: " + daysLeft);
+        String imageUrl = objects.get(position).imageUrl;
+
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        MemoryCache mc = imageLoader.getMemoryCache();
+        List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(imageUrl, mc);
+
+
+        if (!list.isEmpty()) {
+            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+            itemImg.setImageBitmap(list.get(0));
+        } else {
+            Log.d("FOUND", "onCreateView: " + "FALSE");
+
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+            imageLoader.displayImage(imageUrl, itemImg, options);
+        }
+
+
+
+//        new DownloadImageTask(itemImg)
+//                .execute(objects.get(position).imageUrl);
+
+//        Log.d("TEST days left", "getView: " + daysLeft);
 
         if (daysLeft > 7) {
-            Log.d("TEST days left", "getView: " + daysLeft);
             bgShape.setColor(ContextCompat.getColor(context, R.color.ci_green));
         } else if (daysLeft > 3) {
             bgShape.setColor(ContextCompat.getColor(context, R.color.ci_yellow));
