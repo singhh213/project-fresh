@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
         ImageButton scan = (ImageButton) findViewById(R.id.scan);
         ImageButton recipe = (ImageButton) findViewById(R.id.recipe);
 
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         home.setOnClickListener(new View.OnClickListener() {
 
 
@@ -139,6 +141,18 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
         }
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        int count = getSupportFragmentManager().getBackStackEntryCount();
+//
+//        if (count == 0) {
+//            super.onBackPressed();
+//            //additional code
+//        } else {
+//            getSupportFragmentManager().popBackStack();
+//        }
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -165,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
 
     }
 }

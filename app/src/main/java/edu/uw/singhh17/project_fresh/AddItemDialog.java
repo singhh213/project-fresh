@@ -3,12 +3,13 @@ package edu.uw.singhh17.project_fresh;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+//import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,16 +56,15 @@ public class AddItemDialog extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        mListener.onDialogPositiveClick(AddItemDialog.this);
 
-//                        EditText itemAdd = (EditText) getDialog().findViewById(R.id.item_add);
-//                        String item = itemAdd.getText().toString();
-//                        Log.d("TEST", "onClick: " + item);
-//                        Intent intent = new Intent();
-//                        intent.putExtra("item", item);
+                        EditText itemAdd = (EditText) getDialog().findViewById(R.id.item_add);
+                        String item = itemAdd.getText().toString();
+                        Log.d("ITEM", "onClick: " + item);
+                        Intent intent = new Intent();
+                        intent.putExtra("item", item);
 
-//                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, getActivity().getIntent());
-
+                        getTargetFragment().onActivityResult(
+                                getTargetRequestCode(), 0, intent);
 
                     }
                 })
@@ -79,5 +79,6 @@ public class AddItemDialog extends DialogFragment {
         return builder.create();
 
     }
+
 
 }

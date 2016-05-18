@@ -191,10 +191,9 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
                 return true;
             case R.id.shopping_add:
 
-                android.app.FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 AddItemDialog addItem = new AddItemDialog();
-//                addItem.setTargetFragment(fragmentManager.findFragmentById(R.id.container1), 0);
-//        addItem.setTargetFragment(this, 0);
+                addItem.setTargetFragment(this, 0);
                 addItem.show(fragmentManager, "dialog");
 
                 return true;
@@ -204,17 +203,12 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        switch(requestCode) {
-            case DIALOG_FRAGMENT:
-
-                if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == 0) {
                     // After Ok code.
-//                    EditText editText = (EditText) findViewById(R.id.project_name);
-                    Log.d("TEST", "onActivityResult: it works");
 
-                    String item = data.getStringExtra("item");
+                    String item = data.getExtras().getString("item");
+
                     pantryShopping.put(item, false);
                     saveShoppingList();
                     shopList.add(new ShoppingObject(item));
@@ -224,13 +218,11 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
                     // After Cancel code.
                 }
 
-                break;
-        }
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        Log.d("test", "onDialogPositiveClick: it works");
+    public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
+
     }
 
     public interface OnFragmentInteractionListener {
