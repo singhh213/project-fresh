@@ -161,6 +161,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
                 bundle.putString("imageUrl", parseData.get(position).imageUrl);
                 bundle.putString("nutritionUrl", parseData.get(position).nutritionLabel);
                 bundle.putString("quantity", parseData.get(position).quantity);
+                bundle.putString("itemType", parseData.get(position).itemType);
                 ItemInfo itemObj = new ItemInfo();
                 itemObj.setArguments(bundle);
 
@@ -210,7 +211,7 @@ public class PantryView extends Fragment implements ItemInfo.OnFragmentInteracti
                             ParseObject p = objects.get(i);
 
                             parseData.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"),
-                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity"), p.getObjectId()));
+                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity"), p.getObjectId(), p.getString("item")));
 
 //                            pAdapter.add(new PantryData(p.getString("brand") + " " + p.getString("item"), p.getInt("daysLeft"),
 //                                    p.getString("imageUrl"), p.getString("nutritionUrl"), p.getString("quantity"), p.getObjectId()));

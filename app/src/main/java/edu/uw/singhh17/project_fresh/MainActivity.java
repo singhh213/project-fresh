@@ -179,6 +179,17 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
     }
 
     @Override
+    public void onBackPressed() {
+        //Checking for fragment count on backstack
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+            finish();
+        }
+    }
+
+    @Override
     public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
 
     }

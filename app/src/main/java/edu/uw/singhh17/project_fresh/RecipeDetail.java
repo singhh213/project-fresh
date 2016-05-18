@@ -243,6 +243,12 @@ public class RecipeDetail extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("RECIPE");
+    }
+
     public interface OnFragmentInteractionListener {
 //        void onFragmentInteraction(Uri uri);
     }

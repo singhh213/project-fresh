@@ -221,6 +221,12 @@ public class ShoppingList extends Fragment implements AddItemDialog.NoticeDialog
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("SHOPPING LIST");
+    }
+
+    @Override
     public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
 
     }

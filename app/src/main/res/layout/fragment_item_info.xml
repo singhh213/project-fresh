@@ -1,37 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.uw.singhh17.project_fresh.ItemInfo">
+    android:layout_gravity="center_horizontal|bottom"
+    android:fillViewport="true"
+    tools:context="edu.uw.singhh17.project_fresh.ItemInfo"
+    >
 
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="325dp"
-        android:layout_gravity="center_horizontal|bottom">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="325dp"-->
+        <!--android:layout_gravity="center_horizontal|bottom">-->
             <!--<RelativeLayout-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="426dp"-->
                 <!--android:layout_gravity="center_horizontal|bottom">-->
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/nutrtionLabel"
-                    android:cropToPadding="false"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="top"
-                    android:layout_margin="40dp"
-                    />
+                <!--<ImageView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/nutrtionLabel"-->
+                    <!--android:cropToPadding="false"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:layout_gravity="top"-->
+                    <!--android:layout_margin="40dp"-->
+                    <!--/>-->
             <!--</RelativeLayout>-->
-    </ScrollView>
+    <!--</ScrollView>-->
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -47,7 +50,8 @@
                 android:id="@+id/linearLayout"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -73,8 +77,29 @@
                     android:text="Small Text"
                     android:id="@+id/expireInfo"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp" />
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <Button
+                    android:layout_width="210dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add to Shopping List"
+                    android:id="@+id/iteminfo_add_button"
+                    android:layout_gravity="center_horizontal|top"
+                    android:background="@drawable/recipe_border"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="25dp"/>
+
+
             </LinearLayout>
+
+
 
             <ImageView
                 android:layout_width="10dp"
@@ -89,16 +114,36 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginBottom="19dp" />
 
-    <Button
-        android:layout_width="210dp"
-        android:layout_height="wrap_content"
-        android:text="Add to Shopping List"
-        android:id="@+id/iteminfo_add_button"
-        android:layout_gravity="center_horizontal|top"
-        android:background="@drawable/recipe_border"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="350dp"
+            android:id="@+id/nutrtionLabel"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:layout_gravity="top"
+            android:layout_marginTop="45dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Suggested Recipes:"
+            android:id="@+id/textView4"
+            android:layout_below="@+id/nutrtionLabel"
+            android:layout_alignLeft="@+id/itemImage"
+            android:layout_alignStart="@+id/itemImage" />
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textView4"
+            android:id="@+id/item_info_recipes"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"></GridView>
 
     </RelativeLayout>
 
-</FrameLayout>
+</ScrollView>

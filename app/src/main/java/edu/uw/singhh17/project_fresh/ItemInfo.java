@@ -7,12 +7,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -27,9 +32,12 @@ import com.parse.ParseQuery;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import edu.uw.singhh17.project_fresh.Adapters.RecipeAdapter;
+import edu.uw.singhh17.project_fresh.Model.RecipeObject;
 import edu.uw.singhh17.project_fresh.Utils.DownloadImageTask;
 
 
@@ -40,7 +48,7 @@ public class ItemInfo extends Fragment {
     private String imageUrl;
     private String nutritionUrl;
     private String quantity;
-
+    private String itemType;
     private OnFragmentInteractionListener mListener;
 
     public ItemInfo() {
@@ -57,6 +65,7 @@ public class ItemInfo extends Fragment {
             imageUrl = getArguments().getString("imageUrl");
             nutritionUrl = getArguments().getString("nutritionUrl");
             quantity = getArguments().getString("quantity");
+            itemType = getArguments().getString("itemType");
         }
     }
 
@@ -80,6 +89,8 @@ public class ItemInfo extends Fragment {
         itemName.setText(name);
         itemQuantity.setText(quantity);
 
+
+
         ImageLoader imageLoader = ImageLoader.getInstance();
         MemoryCache mc = imageLoader.getMemoryCache();
         List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(imageUrl, mc);
@@ -94,16 +105,23 @@ public class ItemInfo extends Fragment {
             imageLoader.displayImage(imageUrl, itemImg, options);
         }
 
-        List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
+        if (name.contains("Bread")) {
+            nutritionLabel.setImageResource(R.drawable.bread);
+        } else if (name.contains("Chicken")) {
+            nutritionLabel.setImageResource(R.drawable.chicken);
 
-        if (!list2.isEmpty()) {
-            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
-            nutritionLabel.setImageBitmap(list2.get(0));
         } else {
-            Log.d("FOUND", "onCreateView: " + "FALSE");
+            List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
 
-            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
-            imageLoader.displayImage(nutritionUrl, nutritionLabel, options);
+            if (!list2.isEmpty()) {
+                Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
+                nutritionLabel.setImageBitmap(list2.get(0));
+            } else {
+                Log.d("FOUND", "onCreateView: " + "FALSE");
+
+                DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
+                imageLoader.displayImage(nutritionUrl, nutritionLabel, options);
+            }
         }
 
 
@@ -129,6 +147,75 @@ public class ItemInfo extends Fragment {
         } else {
             expInfo.setText("Expired");
         }
+
+
+        final ArrayList<RecipeObject> recipeData = new ArrayList<RecipeObject>();
+
+        final RecipeAdapter recipeAdapter = new RecipeAdapter(getActivity(), R.layout.row_recipe, recipeData);
+        GridView gv = (GridView) rootView.findViewById(R.id.item_info_recipes);
+        gv.setFocusable(false);
+
+        gv.setAdapter(recipeAdapter);
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    if (objects.size() > 0) {
+                        recipeAdapter.clear();
+                        int count = 0;
+                        for (int i = 0; i < objects.size(); i++) {
+                            ParseObject p = objects.get(i);
+                            Log.d("DONE", "done: " + "adding items");
+
+
+                            if (p.getMap("Ingredients").keySet().contains(itemType) && count < 2) {
+                                Log.d("DONE", "done: " + "adding items");
+                                count++;
+                                recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
+                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+
+
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+        gv.setOnItemClickListener(new GridView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putString("recipeId", recipeData.get(position).getRecipeId());
+                bundle.putInt("recipeTime", recipeData.get(position).getTime());
+                bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
+                bundle.putString("recipeName", recipeData.get(position).getName());
+                bundle.putString("recipeImg", recipeData.get(position).getImgUrl());
+                RecipeDetail recipeDetail = new RecipeDetail();
+                recipeDetail.setArguments(bundle);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container1, recipeDetail);
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
+
+
+
+
+
+
+
+
 
         addItem.setOnClickListener(new View.OnClickListener() {
 
@@ -177,7 +264,14 @@ public class ItemInfo extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("ITEM");
+    }
+
     /**
+     *
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
