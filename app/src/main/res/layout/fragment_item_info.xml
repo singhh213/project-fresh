@@ -77,13 +77,10 @@
                     android:text="Small Text"
                     android:id="@+id/expireInfo"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray"/>
+
 
                 <Button
                     android:layout_width="210dp"
@@ -99,11 +96,26 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/itemImage"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        </LinearLayout>
 
 
             <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:id="@+id/colorIndicator"
                 android:layout_gravity="right|top"
                 android:background="@drawable/circle"
@@ -111,6 +123,7 @@
                 android:layout_toRightOf="@+id/linearLayout"
                 android:layout_toEndOf="@+id/linearLayout"
                 android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginBottom="19dp" />
 
@@ -121,15 +134,17 @@
             android:cropToPadding="false"
             android:scaleType="fitXY"
             android:layout_gravity="top"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@+id/linearLayout"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Suggested Recipes:"
             android:id="@+id/textView4"
+            android:layout_marginTop="15dp"
             android:layout_below="@+id/nutrtionLabel"
             android:layout_alignLeft="@+id/itemImage"
             android:layout_alignStart="@+id/itemImage" />

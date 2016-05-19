@@ -61,11 +61,20 @@
             android:layout_toLeftOf="@+id/colorIndicator"
             android:layout_toStartOf="@+id/colorIndicator" />
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/expireInfo"
+            android:layout_marginTop="5dp"
+            android:layout_alignLeft="@+id/expireInfo"
+            android:layout_alignStart="@+id/expireInfo" />
+
     <!--</LinearLayout>-->
 
     <ImageView
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:id="@+id/colorIndicator"
         android:background="@drawable/circle"
         android:layout_marginRight="22dp"

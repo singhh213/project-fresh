@@ -109,7 +109,16 @@ public class ItemInfo extends Fragment {
             nutritionLabel.setImageResource(R.drawable.bread);
         } else if (name.contains("Chicken")) {
             nutritionLabel.setImageResource(R.drawable.chicken);
-
+        } else if (name.contains("Eggs")) {
+            nutritionLabel.setImageResource(R.drawable.eggs);
+        } else if (name.contains("Flour")) {
+            nutritionLabel.setImageResource(R.drawable.flour);
+        } else if (name.contains("Yogurt")) {
+            nutritionLabel.setImageResource(R.drawable.yogurt);
+        } else if (name.contains("Cheese")) {
+            nutritionLabel.setImageResource(R.drawable.cheese);
+        } else if (name.contains("Milk")) {
+            nutritionLabel.setImageResource(R.drawable.milk);
         } else {
             List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
 
