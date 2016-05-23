@@ -74,11 +74,8 @@ public class RecipeAdapter extends ArrayAdapter<RecipeObject>{
         List<Bitmap> list = MemoryCacheUtils.findCachedBitmapsForImageUri(imageUrl, mc);
 
         if (!list.isEmpty()) {
-            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
             img.setImageBitmap(list.get(0));
         } else {
-            Log.d("FOUND", "onCreateView: " + "FALSE");
-
             DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
             imageLoader.displayImage(imageUrl, img, options);
         }

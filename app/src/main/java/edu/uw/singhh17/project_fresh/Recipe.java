@@ -30,9 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 import edu.uw.singhh17.project_fresh.Adapters.RecipeAdapter;
@@ -110,11 +112,28 @@ public class Recipe extends Fragment {
                             if (objects.size() > 0) {
                                 recipeAdapter.clear();
                                 for (int i = 0; i < objects.size(); i++) {
-                                    ParseObject p = objects.get(i);
-                                    if (p.getString("Name").toLowerCase().contains(query.toLowerCase())) {
+                                    ParseObject x = objects.get(i);
+                                    Map<String, String> ingredients = x.getMap("Ingredients");
+
+                                    Set<ParseObject> set = new HashSet<>();
+
+                                    for (String key : ingredients.keySet()) {
+                                        if (key.toLowerCase().contains(query.toLowerCase())){
+                                            set.add(x);
+
+                                        }
+                                    }
+
+                                    if (x.getString("Name").toLowerCase().contains(query.toLowerCase())) {
+                                       set.add(x);
+                                    }
+
+                                    for (ParseObject p : set) {
                                         recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
                                                 p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
                                     }
+
+
                                 }
                             }
                         }

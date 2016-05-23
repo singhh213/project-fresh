@@ -66,10 +66,8 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
 
 
         if (!list.isEmpty()) {
-            Log.d("FOUND", "onCreateView: " + "TRUEEEEE");
             itemImg.setImageBitmap(list.get(0));
         } else {
-            Log.d("FOUND", "onCreateView: " + "FALSE");
 
             DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).build();
             imageLoader.displayImage(imageUrl, itemImg, options);
