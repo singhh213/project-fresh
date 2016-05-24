@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -47,6 +48,7 @@ public class Recipe extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private RecipeAdapter recipeAdapter;
+    private String recipeQuery;
 
     public Recipe() {
         // Required empty public constructor
@@ -55,6 +57,7 @@ public class Recipe extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Test", "onCreate: " + "This gets called");
         if (getArguments() != null) {
         }
     }
@@ -66,13 +69,23 @@ public class Recipe extends Fragment {
         getActivity().setTitle("RECIPES");
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
-        android.widget.SearchView search = (android.widget.SearchView) rootView.findViewById(R.id.searchView);
+        final android.widget.SearchView search = (android.widget.SearchView) rootView.findViewById(R.id.searchView);
+
+        recipeQuery = "";
 
         search.setSubmitButtonEnabled(true);
 
-        search.setOnCloseListener(new android.widget.SearchView.OnCloseListener() {
+        int searchCloseButtonId = search.getContext().getResources()
+                .getIdentifier("android:id/search_close_btn", null, null);
+
+        ImageView closeButton = (ImageView) search.findViewById(searchCloseButtonId);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onClose() {
+            public void onClick(View v) {
+
+                search.setQuery("", false);
+
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Recipes");
                 query.findInBackground(new FindCallback<ParseObject>() {
 
@@ -93,12 +106,13 @@ public class Recipe extends Fragment {
 
                         }
 
+                        recipeQuery = "";
+
                     }
                 });
-                return false;
+                // Manage this event.
             }
         });
-
 
         search.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -133,6 +147,7 @@ public class Recipe extends Fragment {
                                                 p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
                                     }
 
+                                    recipeQuery = query;
 
                                 }
                             }
@@ -184,6 +199,7 @@ public class Recipe extends Fragment {
                 bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
                 bundle.putString("recipeName", recipeData.get(position).getName());
                 bundle.putString("recipeImg", recipeData.get(position).getImgUrl());
+                bundle.putString("queryPassed", recipeQuery);
                 RecipeDetail recipeDetail = new RecipeDetail();
                 recipeDetail.setArguments(bundle);
 
