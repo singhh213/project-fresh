@@ -174,33 +174,50 @@ public class RecipeDetail extends Fragment {
                 final ArrayList<String> shopNeed  = new ArrayList<String>();
                 Log.d("PANTRYLISTEXTRA", "done: " + pantryList.toString());
 
+                ParseObject newRecipe = new ParseObject("RecipeShoppingList");
+                newRecipe.put("name", recipeName);
+                newRecipe.put("rawAmount" , "-1");
+                newRecipe.put("metric", "-1");
+                newRecipe.put("striked", false);
+                newRecipe.put("User", "Harpreet");
+                newRecipe.saveInBackground();
+
                 for (Ingredient x : ingredients) {
                     String name = x.getName();
                     String amount = x.getAmount();
 
-                    if (!pantryList.contains(name) || !shoppingList.contains(name)) {
-                        shopNeed.add(name);
-                        Log.d("RECIPE SHOPPING", "onClick: " + name);
+                    String[] split = amount.split(" ");
+
+
+                    if (!pantryList.contains(name)) {
+                        ParseObject newItem = new ParseObject("RecipeShoppingList");
+                        newItem.put("name", name);
+                        newItem.put("rawAmount" , split[0]);
+                        newItem.put("metric", split[1]);
+                        newItem.put("striked", false);
+                        newItem.put("user", "Harpreet");
+                        newItem.saveInBackground();
                     }
                 }
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");
-                query.getInBackground("IAf5ywmpFM", new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject object, ParseException e) {
-                        if (e == null) {
 
-                            Map<String, Boolean> ingred = object.getMap("shoppingList");
-
-                            for (String name : shopNeed) {
-                                ingred.put(name, false);
-                            }
-
-                            object.put("shoppingList", ingred);
-                            object.saveInBackground();
-                        }
-                    }
-                });
+//                ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");
+//                query.getInBackground("IAf5ywmpFM", new GetCallback<ParseObject>() {
+//                    @Override
+//                    public void done(ParseObject object, ParseException e) {
+//                        if (e == null) {
+//
+//                            Map<String, Boolean> ingred = object.getMap("shoppingList");
+//
+//                            for (String name : shopNeed) {
+//                                ingred.put(name, false);
+//                            }
+//
+//                            object.put("shoppingList", ingred);
+//                            object.saveInBackground();
+//                        }
+//                    }
+//                });
                 addButton.setText("Added to Shopping List");
                 addButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.actionBarGreen));
                 addButton.setTextColor(Color.WHITE);

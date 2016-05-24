@@ -164,10 +164,12 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
 
         switch (item.getItemId()) {
             case R.id.action_shopping:
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.container1, new ShoppingList());
-                ft.addToBackStack(null);
-                ft.commit();
+                Intent intent = new Intent(MainActivity.this, ShoppingActivity.class);
+                startActivity(intent);
+//                FragmentTransaction ft = fragmentManager.beginTransaction();
+//                ft.replace(R.id.container1, new ShoppingList());
+//                ft.addToBackStack(null);
+//                ft.commit();
 
                 return true;
             case R.id.action_settings:

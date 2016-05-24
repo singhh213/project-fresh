@@ -54,6 +54,8 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
         CircleImageView itemImg = (CircleImageView) row.findViewById(R.id.itemImage);
         GradientDrawable bgShape = (GradientDrawable)indicator.getBackground();
 
+        Log.d("PANTRY", "getView: " + objects.get(position).name);
+
         itemName.setText(objects.get(position).name);
         int daysLeft = objects.get(position).daysLeft;
 

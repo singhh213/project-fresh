@@ -1,0 +1,77 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.singhh17.project_fresh.RecipeShoppingList">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0 Recipes Added"
+            android:id="@+id/recipe_count"
+            android:layout_gravity="left|top"
+            android:textSize="15sp"
+            android:textColor="#808080"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="20dp"
+            android:layout_alignTop="@+id/combineViewButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Combined View"
+            android:id="@+id/combineViewButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/recipe_border"
+            android:lines="2"
+            android:textColor="#808080" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView2"
+            android:layout_gravity="center"
+            android:layout_below="@+id/combineViewButton" />
+
+        <!--<TableLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:id="@+id/recipe_shop_table"-->
+            <!--android:layout_below="@+id/button">-->
+
+            <!--&lt;!&ndash;<TableRow&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="match_parent">&ndash;&gt;-->
+
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:textAppearance="?android:attr/textAppearanceLarge"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="Large Text"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/textView5"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_column="0" />&ndash;&gt;-->
+            <!--&lt;!&ndash;</TableRow>&ndash;&gt;-->
+        <!--</TableLayout>-->
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

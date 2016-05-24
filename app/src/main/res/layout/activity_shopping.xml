@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uw.singhh17.project_fresh.ShoppingActivity">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/topShopBar"
+        android:background="@color/bottomBarGreen"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/pantryShop"
+            android:layout_weight="1"
+            android:background="@color/bottomBarGreen"
+            android:text="PANTRY"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:textColor="#ffffff"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/recipeShop"
+            android:layout_weight="1"
+            android:background="@color/bottomBarGreen"
+            android:text="RECIPE"
+            android:gravity="center"
+            android:clickable="true"
+            android:textSize="15sp"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="@color/bottomBarGreen" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/topShopBar"
+        android:id="@+id/shopContainer"></FrameLayout>
+
+</RelativeLayout>
