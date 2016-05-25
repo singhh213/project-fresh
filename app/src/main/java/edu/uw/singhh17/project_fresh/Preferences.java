@@ -1,5 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,6 +48,18 @@ public class Preferences extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
+                return true;
+            }
+        });
+
+        Preference button2 = (Preference)findPreference("about");
+        button2.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.replace(R.id.settings_container, new AboutUs());
+                ft.commit();
                 return true;
             }
         });

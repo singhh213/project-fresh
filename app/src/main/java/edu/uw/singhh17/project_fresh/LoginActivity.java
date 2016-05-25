@@ -1,6 +1,7 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 
 
         final TextView usernameText = (TextView) findViewById(R.id.username);
