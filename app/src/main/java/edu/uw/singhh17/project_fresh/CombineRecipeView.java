@@ -3,17 +3,24 @@ package edu.uw.singhh17.project_fresh;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +38,7 @@ public class CombineRecipeView extends Fragment {
     private CombineRecipeAdapter crAdapter;
     private AdapterView adapterView;
     ArrayList<CombineRecipeObject> recipeList;
+    private String recipesAdded;
 
     public CombineRecipeView() {
         // Required empty public constructor
@@ -45,6 +53,11 @@ public class CombineRecipeView extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_combine_recipe_view, container, false);
 
         recipeList = new ArrayList<>();
+
+        TextView recipeCount = (TextView) rootView.findViewById(R.id.r_count);
+        Button separateView = (Button) rootView.findViewById(R.id.separateViewButton);
+
+        recipeCount.setText(recipesAdded);
 
         crAdapter = new CombineRecipeAdapter(getActivity(), R.layout.row_combine_recipe, recipeList);
         adapterView = (AdapterView) rootView.findViewById(R.id.listView3);
@@ -86,6 +99,17 @@ public class CombineRecipeView extends Fragment {
             }
         });
 
+        separateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.shopContainer, new RecipeShoppingList());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+
         return rootView;
     }
 
@@ -97,6 +121,14 @@ public class CombineRecipeView extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            recipesAdded = getArguments().getString("recipesAdded");
         }
     }
 

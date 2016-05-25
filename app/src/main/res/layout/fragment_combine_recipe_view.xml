@@ -6,9 +6,50 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView3"
-        android:layout_gravity="center_horizontal|top" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0 Recipes Added"
+            android:id="@+id/r_count"
+            android:layout_gravity="left|top"
+            android:textSize="15sp"
+            android:textColor="#808080"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="20dp"
+            android:layout_alignTop="@+id/separateViewButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Separate View"
+            android:id="@+id/separateViewButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/recipe_border"
+            android:lines="2"
+            android:textColor="#808080" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView3"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_below="@+id/separateViewButton" />
+
+    </RelativeLayout>
+
 </FrameLayout>

@@ -129,12 +129,16 @@ public class RecipeShoppingList extends Fragment {
         combine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("recipesAdded", recipeCount[0] + " Recipes Added");
+                CombineRecipeView crv = new CombineRecipeView();
+                crv.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.shopContainer, new CombineRecipeView());
+                ft.replace(R.id.shopContainer, crv);
                 ft.addToBackStack(null);
                 ft.commit();
-
             }
         });
 

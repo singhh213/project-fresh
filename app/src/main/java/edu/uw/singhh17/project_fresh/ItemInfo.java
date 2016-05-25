@@ -116,6 +116,8 @@ public class ItemInfo extends Fragment {
             nutritionLabel.setImageResource(R.drawable.cheese);
         } else if (name.contains("Milk")) {
             nutritionLabel.setImageResource(R.drawable.milk);
+        } else if (name.contains("Wine")) {
+            nutritionLabel.setImageResource(R.drawable.wine);
         } else {
             List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
 
