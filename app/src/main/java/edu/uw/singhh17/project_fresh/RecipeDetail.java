@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -62,6 +64,7 @@ public class RecipeDetail extends Fragment {
     private String recipeName;
     private String recipeImgUrl;
     private String recipeId;
+    private String servingSize;
     private TextView instructions;
     private ArrayList<String> pantryList;
     private ArrayList<String> shoppingList;
@@ -87,6 +90,7 @@ public class RecipeDetail extends Fragment {
         TextView name = (TextView) rootView.findViewById(R.id.recipe_dname);
         TextView time = (TextView) rootView.findViewById(R.id.recipe_dtime);
         TextView difficulty = (TextView) rootView.findViewById(R.id.recipe_ddifficulty);
+        TextView size = (TextView) rootView.findViewById(R.id.serving_size);
         instructions = (TextView) rootView.findViewById(R.id.recipe_instructions);
         final Button addButton = (Button) rootView.findViewById(R.id.add_ingred_button);
 
@@ -125,6 +129,7 @@ public class RecipeDetail extends Fragment {
 
         name.setText(recipeName);
         time.setText(recipeTime + " min");
+        size.setText(servingSize);
 
         if (recipeDiff.equals("Easy")) {
             difficulty.setTextColor(ContextCompat.getColor(getContext(), R.color.ci_green));
@@ -135,6 +140,8 @@ public class RecipeDetail extends Fragment {
         }
 
         difficulty.setText(recipeDiff);
+
+        final ListView igList = (ListView) rootView.findViewById(R.id.igList);
 
         final ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
 
@@ -164,6 +171,8 @@ public class RecipeDetail extends Fragment {
 
                     }
                 }
+                setListViewHeightBasedOnChildren(igList);
+
             }
         });
 
@@ -250,6 +259,7 @@ public class RecipeDetail extends Fragment {
             recipeName = getArguments().getString("recipeName");
             recipeImgUrl = getArguments().getString("recipeImg");
             recipeId = getArguments().getString("recipeId");
+            servingSize = getArguments().getString("servingSize");
         }
     }
 
@@ -320,5 +330,26 @@ public class RecipeDetail extends Fragment {
         });
 
         return shopping;
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

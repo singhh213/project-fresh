@@ -10,14 +10,16 @@ public class RecipeObject {
     private int time;
     private String difficulty;
     private String recipeId;
+    private String servingsCals;
 
 
-    public RecipeObject(String name, String imgUrl, int time, String difficulty, String recipeId) {
+    public RecipeObject(String name, String imgUrl, int time, String difficulty, String servingsCals, String recipeId) {
         this.name = name;
         this.imgUrl = imgUrl;
         this.time = time;
         this.difficulty = difficulty;
         this.recipeId = recipeId;
+        this.servingsCals = servingsCals;
     }
 
     public String getName() {
@@ -38,6 +40,10 @@ public class RecipeObject {
 
     public String getRecipeId() {
         return this.recipeId;
+    }
+
+    public String getServingsCals() {
+        return this.servingsCals;
     }
 
 }

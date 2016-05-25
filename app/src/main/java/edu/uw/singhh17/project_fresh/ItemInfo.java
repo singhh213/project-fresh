@@ -182,7 +182,7 @@ public class ItemInfo extends Fragment {
                                 Log.d("DONE", "done: " + "adding items");
                                 count++;
                                 recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
 
 
                             }
@@ -203,6 +203,7 @@ public class ItemInfo extends Fragment {
                 bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
                 bundle.putString("recipeName", recipeData.get(position).getName());
                 bundle.putString("recipeImg", recipeData.get(position).getImgUrl());
+                bundle.putString("servingSize", recipeData.get(position).getServingsCals());
                 RecipeDetail recipeDetail = new RecipeDetail();
                 recipeDetail.setArguments(bundle);
 

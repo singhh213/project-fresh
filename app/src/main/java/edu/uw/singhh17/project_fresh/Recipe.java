@@ -98,7 +98,7 @@ public class Recipe extends Fragment {
                                     ParseObject p = objects.get(i);
 
                                     recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                            p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                            p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
 
 
                                 }
@@ -144,7 +144,7 @@ public class Recipe extends Fragment {
 
                                     for (ParseObject p : set) {
                                         recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                                p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                                p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
                                     }
 
                                     recipeQuery = query;
@@ -182,7 +182,7 @@ public class Recipe extends Fragment {
                             ParseObject p = objects.get(i);
 
                             recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
                         }
                     }
                 }
@@ -199,6 +199,7 @@ public class Recipe extends Fragment {
                 bundle.putString("recipeDiff", recipeData.get(position).getDifficulty());
                 bundle.putString("recipeName", recipeData.get(position).getName());
                 bundle.putString("recipeImg", recipeData.get(position).getImgUrl());
+                bundle.putString("servingSize", recipeData.get(position).getServingsCals());
                 bundle.putString("queryPassed", recipeQuery);
                 RecipeDetail recipeDetail = new RecipeDetail();
                 recipeDetail.setArguments(bundle);
@@ -266,7 +267,7 @@ public class Recipe extends Fragment {
                         for (int i = 0; i < objects.size(); i++) {
                             ParseObject p = objects.get(i);
                             recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                    p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
                         }
                     }
                 }
@@ -344,7 +345,7 @@ public class Recipe extends Fragment {
                                             if (ingredients.keySet().contains(name1) || ingredients.keySet().contains(name2) || ingredients.keySet().contains(name3)) {
                                                 Log.d("RECIPES", "done: " + p.getString("Name"));
                                                 recipeAdapter.add(new RecipeObject(p.getString("Name"), p.getString("ImageUrl"),
-                                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getObjectId()));
+                                                        p.getInt("CookTime"), p.getString("Difficulty"), p.getString("ServingsCals"), p.getObjectId()));
                                             }
                                         }
                                     }
