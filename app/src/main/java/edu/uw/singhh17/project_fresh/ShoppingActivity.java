@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class ShoppingActivity extends AppCompatActivity implements ShoppingList.OnFragmentInteractionListener, RecipeShoppingList.OnFragmentInteractionListener {
+public class ShoppingActivity extends AppCompatActivity implements ShoppingList.OnFragmentInteractionListener, RecipeShoppingList.OnFragmentInteractionListener, CombineRecipeView.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
 
