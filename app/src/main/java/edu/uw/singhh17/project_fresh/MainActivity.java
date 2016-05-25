@@ -173,7 +173,8 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
 
                 return true;
             case R.id.action_settings:
-
+                Intent intent2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent2);
 
                 return true;
         }
