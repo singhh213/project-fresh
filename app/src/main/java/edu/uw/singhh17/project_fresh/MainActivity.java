@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
                 ParseObject newObject = new ParseObject("Pantry");
 
 
-                if (upc.contains("16000")) {
+                if (upc.contains("85239")) {
 
                     newObject.put("item", "French Bread");
                     newObject.put("brand", "Market Pantry");

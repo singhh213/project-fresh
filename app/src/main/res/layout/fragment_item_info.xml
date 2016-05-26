@@ -128,16 +128,15 @@
                 android:layout_marginBottom="19dp" />
 
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="350dp"
+            android:layout_width="300dp"
+            android:layout_height="390dp"
             android:id="@+id/nutrtionLabel"
             android:cropToPadding="false"
             android:scaleType="fitXY"
+            android:layout_marginTop="20dp"
             android:layout_gravity="top"
-            android:layout_marginTop="30dp"
             android:layout_below="@+id/linearLayout"
-            android:layout_alignRight="@+id/linearLayout"
-            android:layout_alignEnd="@+id/linearLayout" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -84,10 +84,10 @@ public class PantryAdapter extends ArrayAdapter<PantryData> {
 
         if (daysLeft > 7) {
             bgShape.setColor(ContextCompat.getColor(context, R.color.ci_green));
-        } else if (daysLeft > 3) {
+        } else if (daysLeft > 0) {
             bgShape.setColor(ContextCompat.getColor(context, R.color.ci_yellow));
-        } else if (daysLeft > 0){
-            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_orange));
+//        } else if (daysLeft > 0){
+//            bgShape.setColor(ContextCompat.getColor(context, R.color.ci_orange));
         } else {
             bgShape.setColor(ContextCompat.getColor(context, R.color.ci_red));
         }

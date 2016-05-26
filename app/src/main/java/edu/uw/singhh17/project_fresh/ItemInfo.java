@@ -150,10 +150,10 @@ public class ItemInfo extends Fragment {
         if (expireInfo > 7) {
             Log.d("TEST days left", "getView: " + expireInfo);
             bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_green));
-        } else if (expireInfo > 3) {
+        } else if (expireInfo > 0) {
             bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_yellow));
-        } else if (expireInfo > 0){
-            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_orange));
+//        } else if (expireInfo > 0){
+//            bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_orange));
         } else {
             bgShape.setColor(ContextCompat.getColor(getContext(), R.color.ci_red));
         }
