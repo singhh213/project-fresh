@@ -54,7 +54,7 @@ public class IngredientsAdapter extends ArrayAdapter<Ingredient> {
         if (name.equals("Milk") || name.equals("Cheddar Cheese") || name.equals("Yogurt") ||
                 name.equals("Red Wine") || name.equals("Flour") || name.equals("Bread") ||
                 name.equals("Chicken Breast") || name.equals("Eggs") || name.equals("Olive Oil") || name.equals("French Bread")
-                || name.equals("Lite Chocolate Syrup") || name.equals("Strawberries"))  {
+                || name.equals("Chocolate Syrup") || name.equals("Strawberries"))  {
             igName.setTextColor(Color.parseColor("#65bab7"));
             igAmount.setTextColor(Color.parseColor("#65bab7"));
         } else {

@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
                 } else {
 
 //                ParseObject newObject = new ParseObject("Pantry");
-                    newObject.put("item", "Lite Chocolate Syrup");
-                    newObject.put("brand", "Hershey's");
+                    newObject.put("item", "Chocolate Syrup");
+                    newObject.put("brand", "Hershey's Lite");
                     newObject.put("daysLeft", 34);
                     newObject.put("quantity", "24 Ounces");
                     newObject.put("nutritionUrl", "http://i5.walmartimages.com/dfw/dce07b8c-f277/k2-_df6c917d-8c2a-470e-9c60-2a50916d0333.v1.jpg");
