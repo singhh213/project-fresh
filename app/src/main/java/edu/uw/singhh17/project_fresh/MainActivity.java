@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import edu.uw.singhh17.project_fresh.Utils.JSONAsyncTask;
 
@@ -126,7 +129,65 @@ public class MainActivity extends AppCompatActivity implements PantryView.OnFrag
 
             String urlString = baseUrl + upc + appKeys;
 
-            new JSONAsyncTask().execute(urlString);
+//            new JSONAsyncTask().execute(urlString);
+//"85239"
+
+            if (upc != null) {
+
+
+                ParseObject newObject = new ParseObject("Pantry");
+
+
+                if (upc.contains("16000")) {
+
+                    newObject.put("item", "French Bread");
+                    newObject.put("brand", "Market Pantry");
+                    newObject.put("daysLeft", 1);
+                    newObject.put("quantity", "1 Roll");
+                    newObject.put("nutritionUrl", "http://i5.walmartimages.com/dfw/dce07b8c-f277/k2-_df6c917d-8c2a-470e-9c60-2a50916d0333.v1.jpg");
+                    newObject.put("imageUrl", "http://scene7.targetimg1.com/is/image/Target/14826441?wid=480&hei=480");
+                    newObject.saveInBackground();
+//                newObject.saveInBackground();
+
+
+                } else if (upc.contains("15756")) {
+
+//                ParseObject newObject = new ParseObject("Pantry");
+                    newObject.put("item", "Strawberries");
+                    newObject.put("brand", "Driscoll");
+                    newObject.put("daysLeft", 7);
+                    newObject.put("quantity", "1 Pound");
+                    newObject.put("nutritionUrl", "http://i5.walmartimages.com/dfw/dce07b8c-f277/k2-_df6c917d-8c2a-470e-9c60-2a50916d0333.v1.jpg");
+                    newObject.put("imageUrl", "http://scene7.targetimg1.com/is/image/Target/13208903?wid=480&hei=480");
+//                newObject.saveInBackground();
+
+
+                } else {
+
+//                ParseObject newObject = new ParseObject("Pantry");
+                    newObject.put("item", "Lite Chocolate Syrup");
+                    newObject.put("brand", "Hershey's");
+                    newObject.put("daysLeft", 34);
+                    newObject.put("quantity", "24 Ounces");
+                    newObject.put("nutritionUrl", "http://i5.walmartimages.com/dfw/dce07b8c-f277/k2-_df6c917d-8c2a-470e-9c60-2a50916d0333.v1.jpg");
+                    newObject.put("imageUrl", "http://i5.walmartimages.com/dfw/dce07b8c-ef9a/k2-_4df1efe7-5aea-4405-ba35-e4e853aea8f6.v1.jpg");
+
+
+                }
+                newObject.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        fragmentManager = getSupportFragmentManager();
+                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                        final PantryView pantry = new PantryView();
+                        ft.replace(R.id.container1, pantry);
+                        ft.commit();
+                    }
+                });
+
+            }
+//            finish();
+//            startActivity(getIntent());
 
 
 //            String s = "http://www.google.com/search?q=";

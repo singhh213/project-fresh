@@ -102,8 +102,8 @@ public class ItemInfo extends Fragment {
             imageLoader.displayImage(imageUrl, itemImg, options);
         }
 
-        if (name.contains("Bread")) {
-            nutritionLabel.setImageResource(R.drawable.bread);
+        if (name.contains("French Bread")) {
+            nutritionLabel.setImageResource(R.drawable.french_bread);
         } else if (name.contains("Chicken")) {
             nutritionLabel.setImageResource(R.drawable.chicken);
         } else if (name.contains("Eggs")) {
@@ -118,6 +118,14 @@ public class ItemInfo extends Fragment {
             nutritionLabel.setImageResource(R.drawable.milk);
         } else if (name.contains("Wine")) {
             nutritionLabel.setImageResource(R.drawable.wine);
+        } else if (name.contains("Olive Oil")) {
+            nutritionLabel.setImageResource(R.drawable.oliveoil);
+        } else if (name.contains("Syrup")) {
+            nutritionLabel.setImageResource(R.drawable.hersheysyrup);
+        } else if (name.contains("Bread")) {
+            nutritionLabel.setImageResource(R.drawable.bread);
+        } else if (name.contains("Strawberr")) {
+            nutritionLabel.setImageResource(R.drawable.strawberries);
         } else {
             List<Bitmap> list2 = MemoryCacheUtils.findCachedBitmapsForImageUri(nutritionUrl, mc);
 
