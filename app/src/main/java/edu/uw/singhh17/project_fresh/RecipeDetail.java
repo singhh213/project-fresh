@@ -29,12 +29,14 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -176,6 +178,15 @@ public class RecipeDetail extends Fragment {
             }
         });
 
+
+        final Map<String, Double> fractions = new HashMap<String, Double>();
+
+        fractions.put("1/2", 0.5);
+        fractions.put("1/3", 0.33);
+        fractions.put("1/4", 0.25);
+        fractions.put("3/4", 0.75);
+        fractions.put("2/3", 0.66);
+
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -183,31 +194,50 @@ public class RecipeDetail extends Fragment {
                 final ArrayList<String> shopNeed  = new ArrayList<String>();
                 Log.d("PANTRYLISTEXTRA", "done: " + pantryList.toString());
 
-                ParseObject newRecipe = new ParseObject("RecipeShoppingList");
+                ParseObject newRecipe = new ParseObject("RSList");
                 newRecipe.put("name", recipeName);
-                newRecipe.put("rawAmount" , "-1");
+                newRecipe.put("rawAmount" , -1.0);
                 newRecipe.put("metric", "-1");
                 newRecipe.put("striked", false);
-                newRecipe.put("User", "Harpreet");
-                newRecipe.saveInBackground();
+                newRecipe.put("user", "Harpreet");
 
-                for (Ingredient x : ingredients) {
-                    String name = x.getName();
-                    String amount = x.getAmount();
+                newRecipe.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
 
-                    String[] split = amount.split(" ");
+                        for (Ingredient x : ingredients) {
+                            String name = x.getName();
+                            String amount = x.getAmount();
+
+                            String[] split = amount.split(" ");
+                            Log.d("ADDITEM TEST", "onClick: " + "splitting ingred");
 
 
-                    if (!pantryList.contains(name)) {
-                        ParseObject newItem = new ParseObject("RecipeShoppingList");
-                        newItem.put("name", name);
-                        newItem.put("rawAmount" , split[0]);
-                        newItem.put("metric", split[1]);
-                        newItem.put("striked", false);
-                        newItem.put("user", "Harpreet");
-                        newItem.saveInBackground();
+                            if (!pantryList.contains(name)) {
+                                Log.d("ADDITEM TEST", "onClick: " + "adding to recipe shop list");
+                                ParseObject newItem = new ParseObject("RSList");
+                                newItem.put("name", name);
+
+                                double z = 0.0;
+                                if (split[0].contains("/")) {
+                                    z = fractions.get(split[0]);
+                                    newItem.put("rawAmount" , z);
+                                } else {
+                                    newItem.put("rawAmount" , Double.parseDouble(split[0]));
+                                }
+                                newItem.put("metric", split[1]);
+                                newItem.put("striked", false);
+                                newItem.put("user", "Harpreet");
+                                newItem.saveInBackground();
+                            }
+                        }
+
                     }
-                }
+                });
+
+
+
+
 
 
 //                ParseQuery<ParseObject> query = ParseQuery.getQuery("ShoppingList");

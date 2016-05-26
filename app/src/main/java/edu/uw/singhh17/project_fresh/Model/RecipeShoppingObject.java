@@ -7,18 +7,21 @@ public class RecipeShoppingObject {
 
     public Boolean striked;
     public String name;
-    public String amount;
+    public double amount;
+    public String metric;
 
-    public RecipeShoppingObject(String name, Boolean striked, String amount) {
+    public RecipeShoppingObject(String name, Boolean striked, double amount, String metric) {
         this.name = name;
         this.striked = striked;
         this.amount = amount;
+        this.metric = metric;
     }
 
-    public RecipeShoppingObject(String name, String amount) {
+    public RecipeShoppingObject(String name, double amount) {
         this.name = name;
         this.striked = false;
         this.amount = amount;
+        this.metric = "";
     }
 
 

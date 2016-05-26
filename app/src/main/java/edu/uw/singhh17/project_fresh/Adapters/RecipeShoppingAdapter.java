@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uw.singhh17.project_fresh.Model.RecipeShoppingObject;
 import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
@@ -42,10 +44,18 @@ public class RecipeShoppingAdapter extends ArrayAdapter<RecipeShoppingObject> {
         TextView itemText = (TextView) row.findViewById(R.id.recipeShopName);
         TextView amountText = (TextView) row.findViewById(R.id.recipeShopAmount);
 
-        String amount = objects.get(position).amount;
+        double amount = objects.get(position).amount;
         String name = objects.get(position).name;
 
-        if (amount.equals("-1 -1")) {
+        final Map<Double, String> fractions = new HashMap<Double, String>();
+
+        fractions.put(0.5, "1/2");
+        fractions.put(0.33, "1/3");
+        fractions.put(0.25, "1/4");
+        fractions.put(0.75, "3/4");
+        fractions.put(0.66, "2/3");
+
+        if (amount == -1.0) {
             itemText.setTextSize(22);
             itemText.setText(name);
             itemText.setTextColor(Color.WHITE);
@@ -56,7 +66,11 @@ public class RecipeShoppingAdapter extends ArrayAdapter<RecipeShoppingObject> {
 
         } else {
             itemText.setText(name);
-            amountText.setText(amount);
+            if (fractions.containsKey(amount)) {
+                amountText.setText(fractions.get(amount) + " " + objects.get(position).metric);
+            } else {
+                amountText.setText((int)amount + " " + objects.get(position).metric);
+            }
         }
 
 

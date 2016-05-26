@@ -72,7 +72,7 @@ public class RecipeShoppingList extends Fragment {
         final TextView rcDisplay = (TextView) rootView.findViewById(R.id.recipe_count);
         Button combine = (Button) rootView.findViewById(R.id.combineViewButton);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("RecipeShoppingList");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("RSList");
         query.findInBackground(new FindCallback<ParseObject>() {
 
             @Override
@@ -83,10 +83,10 @@ public class RecipeShoppingList extends Fragment {
                         for (int i = 0; i < objects.size(); i++) {
                             ParseObject p = objects.get(i);
 
-                            if (p.getString("amount").equals("-1")) {
+                            if (p.getString("metric").equals("-1")) {
                                 recipeCount[0]++;
                             }
-                            shopList.add(new RecipeShoppingObject(p.getString("name"), p.getBoolean("striked"), p.getInt("rawAmount") + " " + p.getString("metric")));
+                            shopList.add(new RecipeShoppingObject(p.getString("name"), p.getBoolean("striked"), p.getDouble("rawAmount"), p.getString("metric")));
 
                             ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 

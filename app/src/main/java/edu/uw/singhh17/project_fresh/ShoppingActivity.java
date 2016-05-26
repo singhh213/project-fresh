@@ -2,6 +2,7 @@ package edu.uw.singhh17.project_fresh;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class ShoppingActivity extends AppCompatActivity implements ShoppingList.OnFragmentInteractionListener, RecipeShoppingList.OnFragmentInteractionListener, CombineRecipeView.OnFragmentInteractionListener {
+public class ShoppingActivity extends AppCompatActivity implements ShoppingList.OnFragmentInteractionListener, RecipeShoppingList.OnFragmentInteractionListener, CombineRecipeView.OnFragmentInteractionListener, AddItemDialog.NoticeDialogListener {
 
     private FragmentManager fragmentManager;
 
@@ -62,6 +63,11 @@ public class ShoppingActivity extends AppCompatActivity implements ShoppingList.
             }
         });
 
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
 
     }
 }

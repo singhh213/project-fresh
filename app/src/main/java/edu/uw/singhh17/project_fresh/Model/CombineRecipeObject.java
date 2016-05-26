@@ -7,17 +7,17 @@ public class CombineRecipeObject {
 
     public Boolean striked;
     public String name;
-    public int amount;
+    public double amount;
     public String metric;
 
-    public CombineRecipeObject(String name, Boolean striked, int amount, String metric) {
+    public CombineRecipeObject(String name, Boolean striked, double amount, String metric) {
         this.name = name;
         this.striked = striked;
         this.amount = amount;
         this.metric = metric;
     }
 
-    public CombineRecipeObject(String name, int amount, String metric) {
+    public CombineRecipeObject(String name, double amount, String metric) {
         this.name = name;
         this.striked = false;
         this.amount = amount;

@@ -63,9 +63,10 @@ public class CombineRecipeView extends Fragment {
         adapterView = (AdapterView) rootView.findViewById(R.id.listView3);
         adapterView.setAdapter(crAdapter);
 
+
         final Map<String, CombineRecipeObject> map = new HashMap<>();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("RecipeShoppingList");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("RSList");
         query.findInBackground(new FindCallback<ParseObject>() {
 
             @Override
@@ -79,16 +80,17 @@ public class CombineRecipeView extends Fragment {
                             String name = p.getString("name");
                             if(!p.getString("metric").equals("-1")){
                                 if(!map.containsKey(name)) {
-                                    CombineRecipeObject cr = new CombineRecipeObject(name, false, p.getInt("rawAmount"), p.getString("metric"));
+                                    CombineRecipeObject cr = new CombineRecipeObject(name, false, p.getDouble("rawAmount"), p.getString("metric"));
                                     map.put(name, cr);
                                 } else {
-                                    map.get(name).amount += p.getInt("rawAmount");
+                                    map.get(name).amount += p.getDouble("rawAmount");
                                 }
                             }
 
                         }
 
                         for (String key : map.keySet()) {
+
                             recipeList.add(new CombineRecipeObject(map.get(key).name, map.get(key).striked, map.get(key).amount, map.get(key).metric));
 
                             ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
