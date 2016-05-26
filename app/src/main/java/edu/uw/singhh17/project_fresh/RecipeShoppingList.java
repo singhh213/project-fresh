@@ -4,10 +4,15 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,6 +34,7 @@ import java.util.Map;
 
 import edu.uw.singhh17.project_fresh.Adapters.RecipeShoppingAdapter;
 import edu.uw.singhh17.project_fresh.Adapters.ShoppingAdapter;
+import edu.uw.singhh17.project_fresh.Model.CombineRecipeObject;
 import edu.uw.singhh17.project_fresh.Model.RecipeShoppingObject;
 import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 
@@ -99,31 +105,31 @@ public class RecipeShoppingList extends Fragment {
         });
 
 
-//        adapterView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView item = (TextView) view.findViewById(R.id.recipeShopName);
-//
-//                String food = item.getText().toString();
-//
-////                Boolean striked = pantryShopping.get(food);
-//
-//                if (!shopList.get(position).striked) { //check if boolean for strikethrough for item is true or false to remove strikethrough
-//                    item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        adapterView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView item = (TextView) view.findViewById(R.id.recipeShopName);
+
+                String food = item.getText().toString();
+                Boolean striked = shopList.get(position).striked;
+                String metric = shopList.get(position).metric;
+
+                if(!metric.equals("-1")) {
+                    if (!striked) { //check if boolean for strikethrough for item is true or false to remove strikethrough
+                        item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 //                    pantryShopping.put(food, true);
+                        shopList.get(position).striked = true;
 //                    shopList.get(position).striked = true;
-//
-//                } else {
-//                    item.setPaintFlags(item.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
+                    } else {
+                        item.setPaintFlags(item.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        shopList.get(position).striked = false;
 //                    pantryShopping.put(food, false);
 //                    shopList.get(position).striked = false;
-//                }
-//
-//                saveShoppingList();
-//                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-//            }
-//        });
+                    }
+                }
+            }
+        });
 
 
         combine.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +149,48 @@ public class RecipeShoppingList extends Fragment {
         });
 
         return rootView;
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.recipe_shopping_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.recipe_shopping_delete:
+
+
+                ArrayList<RecipeShoppingObject> dupShopList = new ArrayList<>();
+
+                for (RecipeShoppingObject rs : shopList) {
+                    dupShopList.add(rs);
+                }
+
+                for (RecipeShoppingObject obj : dupShopList) {
+
+                    if (obj.striked) {
+                        shopList.remove(obj);
+                    }
+                }
+
+                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 

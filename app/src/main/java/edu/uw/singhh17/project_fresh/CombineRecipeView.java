@@ -1,13 +1,18 @@
 package edu.uw.singhh17.project_fresh;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,12 +29,14 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import edu.uw.singhh17.project_fresh.Adapters.CombineRecipeAdapter;
 import edu.uw.singhh17.project_fresh.Model.CombineRecipeObject;
 import edu.uw.singhh17.project_fresh.Model.RecipeShoppingObject;
+import edu.uw.singhh17.project_fresh.Model.ShoppingObject;
 
 
 public class CombineRecipeView extends Fragment {
@@ -39,6 +46,7 @@ public class CombineRecipeView extends Fragment {
     private AdapterView adapterView;
     ArrayList<CombineRecipeObject> recipeList;
     private String recipesAdded;
+    private Map<String, CombineRecipeObject> map;
 
     public CombineRecipeView() {
         // Required empty public constructor
@@ -64,7 +72,7 @@ public class CombineRecipeView extends Fragment {
         adapterView.setAdapter(crAdapter);
 
 
-        final Map<String, CombineRecipeObject> map = new HashMap<>();
+        map = new HashMap<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("RSList");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -112,6 +120,39 @@ public class CombineRecipeView extends Fragment {
             }
         });
 
+        adapterView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView item = (TextView) view.findViewById(R.id.combine_name);
+
+                String food = item.getText().toString();
+//                Boolean striked = map.get(food).striked;
+                Boolean striked = recipeList.get(position).striked;
+
+
+                if (!striked) { //check if boolean for strikethrough for item is true or false to remove strikethrough
+                    item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//                    pantryShopping.put(food, true);
+//                    map.get(food).striked = true;
+                    recipeList.get(position).striked = true;
+
+//                    shopList.get(position).striked = true;
+
+                } else {
+                    item.setPaintFlags(item.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+//                    map.get(food).striked = false;
+                    recipeList.get(position).striked = false;
+
+//                    pantryShopping.put(food, false);
+//                    shopList.get(position).striked = false;
+                }
+
+//                saveShoppingList();
+//                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+            }
+        });
+
+
         return rootView;
     }
 
@@ -129,10 +170,79 @@ public class CombineRecipeView extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             recipesAdded = getArguments().getString("recipesAdded");
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.recipe_shopping_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.recipe_shopping_delete:
+
+                ArrayList<CombineRecipeObject> dupShopList = new ArrayList<>();
+
+
+                for (CombineRecipeObject rs : recipeList) {
+                    dupShopList.add(rs);
+                }
+
+                for (CombineRecipeObject obj : dupShopList) {
+
+                    if (obj.striked) {
+                        recipeList.remove(obj);
+                    }
+                }
+
+
+                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        menu.clear();
+//        inflater.inflate(R.menu.recipe_shopping_menu, menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.shopping_delete:
+//
+////                Iterator it = pantryShopping.entrySet().iterator();
+////                while (it.hasNext()) {
+////                    Map.Entry x = (Map.Entry) it.next();
+////                    if ((Boolean) x.getValue()) {
+////                        Log.d("test", "onOptionsItemSelected: " + "remove meeeeee");
+////                        ShoppingObject delete = new ShoppingObject((String) x.getKey(), true);
+////                        shopList.remove(delete);
+////
+////                        Log.d("TEST ", "onOptionsItemSelected: " + shopList.toString());
+////                        it.remove();
+////                    }
+////                }
+////
+////                saveShoppingList();
+////
+////                ((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+//
+//                return true;
+//        }
+//        return true;
+//    }
 
     @Override
     public void onDetach() {

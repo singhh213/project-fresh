@@ -17,11 +17,20 @@ public class CombineRecipeObject {
         this.metric = metric;
     }
 
-    public CombineRecipeObject(String name, double amount, String metric) {
+    public CombineRecipeObject(String name) {
         this.name = name;
         this.striked = false;
-        this.amount = amount;
-        this.metric = metric;
+        this.amount = -1.0;
+        this.metric = "";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        CombineRecipeObject other = (CombineRecipeObject) o;
+        if (this.name.equals(other.name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
