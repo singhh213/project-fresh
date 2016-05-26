@@ -212,7 +212,7 @@ public class Recipe extends Fragment {
             }
         });
 
-        final ImageButton filterButton = (ImageButton) rootView.findViewById(R.id.filterButton);
+        final Button filterButton = (Button) rootView.findViewById(R.id.filterButton);
         filterButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

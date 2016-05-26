@@ -62,7 +62,7 @@ public class RecipeShoppingAdapter extends ArrayAdapter<RecipeShoppingObject> {
             amountText.setTextSize(22);
             amountText.setText(">");
             amountText.setTextColor(Color.WHITE);
-            row.setBackgroundColor(Color.parseColor("#9BE52A"));
+            row.setBackgroundColor(Color.parseColor("#7cae41"));
 
         } else {
             itemText.setText(name);

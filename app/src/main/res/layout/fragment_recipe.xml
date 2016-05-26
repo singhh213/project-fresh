@@ -24,12 +24,16 @@
         android:layout_marginTop="10dp"
         android:iconifiedByDefault="false" />
 
-    <ImageButton
+    <Button
         android:layout_width="75dp"
-        android:layout_height="62dp"
+        android:layout_height="wrap_content"
         android:id="@+id/filterButton"
         android:layout_gravity="right|top"
-        android:src="@drawable/ic_recipe_menu_icon"
-        android:background="#ffffff" />
+        android:layout_marginTop="10dp"
+        android:text="FILTER"
+        android:textColor="#808080"
+        android:drawableRight="@drawable/ic_arrow_down"
+        android:background="#ffffff"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </FrameLayout>

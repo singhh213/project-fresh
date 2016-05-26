@@ -41,20 +41,20 @@
             android:id="@+id/home"
             android:src="@drawable/ic_home_button"
             android:layout_weight="1"
-            android:background="@color/bottomBarGreen" />
+            android:background="@color/actionBarGreen" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/scan"
             android:src="@drawable/ic_scan_button"
             android:layout_weight="1"
-            android:background="@color/bottomBarGreen" />
+            android:background="@color/actionBarGreen" />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/recipe"
             android:src="@drawable/ic_recipe_button"
             android:layout_weight="1"
-            android:background="@color/bottomBarGreen" />
+            android:background="@color/actionBarGreen" />
     </LinearLayout>
 </RelativeLayout>
